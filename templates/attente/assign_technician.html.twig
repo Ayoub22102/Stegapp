@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-6">Assigner un Technicien à la Réclamation #{{ reclamation.id }}</h1>
+
+        <form method="POST" action="{{ path('attenteapp_attente_assign_technician', { id: reclamation.id }) }}">
+            <div class="mb-4">
+                <label for="technician_id" class="block text-sm font-medium text-gray-700">Sélectionner un Technicien</label>
+                <select class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="technician_id" name="technician_id">
+                    {% for technician in technicians %}
+                        <option value="{{ technician.id }}">{{ technician.nom }} {{ technician.prenom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow">
+                Assigner le Technicien
+            </button>
+        </form>
+    </div>
+{% endblock %}

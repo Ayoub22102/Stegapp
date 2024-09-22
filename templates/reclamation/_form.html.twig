@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.type, 'Type de Réclamation') }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_help(form.type) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_help(form.description) }}
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}

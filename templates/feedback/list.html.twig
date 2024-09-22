@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donnez votre Feedback{% endblock %}
+
+{% block body %}
+<h1>Liste des Interventions Clôturées</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Analyse</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.analyse }}</td>
+                <td>{{ reclamation.date|date('Y-m-d') }}</td>
+                <td>
+                    <a href="{{ path('feedback_submit', {id: reclamation.id}) }}">Donnez Votre Feedback</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

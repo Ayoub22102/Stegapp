@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accepter la Réclamation{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-6">Confirmer l'Acceptation</h1>
+
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded">
+            <p class="mb-3">Êtes-vous sûr de vouloir accepter la réclamation suivante ?</p>
+            <ul class="list-disc list-inside">
+                <li><strong>Description :</strong> {{ reclamation.description }}</li>
+                <li><strong>Date de Soumission :</strong> {{ reclamation.dateSoumission ? reclamation.dateSoumission|date('Y-m-d') : '' }}</li>
+                <li><strong>Email du Client :</strong> {{ reclamation.clientmail }}</li>
+                <li><strong>Adresse :</strong> {{ reclamation.adresse }}</li>
+            </ul>
+        </div>
+
+        <form method="post" action="{{ path('attenteapp_attente_accept', {id: reclamation.id}) }}">
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">Accepter</button>
+            <a href="{{ path('attenteapp_attente_index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow ml-2">Annuler</a>
+        </form>
+    </div>
+{% endblock %}

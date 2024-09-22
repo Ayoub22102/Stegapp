@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clôturer Intervention{% endblock %}
+
+{% block body %}
+    <h1>Clôturer Intervention {{ intervention.id }}</h1>
+
+    <form method="post">
+        <button type="submit" name="confirm" value="yes">Confirmer la Clôture</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Soumettre une nouvelle Réclamation{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Custom background color for the page */
+    body {
+        background-color: #f0f4f8; /* Light blue-gray background */
+    }
+
+    /* Custom radio button styles */
+    .radio-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .radio-option {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #333;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease;
+        width: 100px;
+    }
+
+    .radio-option:hover {
+        border-color: #4a90e2;
+        background-color: #ebf8ff;
+    }
+
+    /* Styling for the radio input */
+    .radio-option input[type="radio"] {
+        display: none;
+    }
+
+    /* Styling the label when the radio button is selected */
+    .radio-option input[type="radio"]:checked + label {
+        background-color: #4a90e2;
+        color: white;
+        border-color: #4a90e2;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto mt-10">
+        <h1 class="text-center text-3xl font-bold mb-6">Soumettre une nouvelle Réclamation</h1>
+
+        <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <!-- Start the form and ensure it's correctly submitted -->
+                {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+                <!-- Automatically generated radio button group for type of reclamation -->
+                <div class="mb-4">
+                    {{ form_label(form.type, 'Type de Réclamation', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_widget(form.type, {'attr': {'class': 'radio-group'}}) }}
+                    {{ form_errors(form.type) }}
+                </div>
+
+                <!-- Description field -->
+                <div class="mb-4">
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <!-- Address field -->
+                <div class="mb-4">
+                    {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_widget(form.adresse, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                    {{ form_errors(form.adresse) }}
+                </div>
+
+                <!-- Submit button -->
+                <div class="mt-6">
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Soumettre
+                    </button>
+                </div>
+
+                <!-- End the form -->
+                {{ form_end(form) }}
+            </div>
+
+            <!-- Back to list button -->
+            <div class="mt-4">
+                <a href="{{ path('app_reclamation_index') }}" class="block text-center bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+                    Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

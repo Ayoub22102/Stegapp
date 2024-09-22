@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donner votre Feedback{% endblock %}
+
+{% block body %}
+<h1>Donner votre Feedback pour la réclamation {{ reclamation.id }}</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.evaluation, {'attr': {'class': 'star-rating'}}) }}
+    {{ form_row(form.Commentaire) }}
+    <button class="btn">Soumettre le Feedback</button>
+{{ form_end(form) }}
+
+{% endblock %}

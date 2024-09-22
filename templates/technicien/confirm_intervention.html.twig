@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation d'Intervention{% endblock %}
+
+{% block body %}
+    <h1>Confirmer l'Intervention</h1>
+
+    <p>Êtes-vous sûr de vouloir finaliser cette intervention avec les détails suivants?</p>
+
+    <ul>
+        <li><strong>Analyse:</strong> {{ analyse }}</li>
+        <li><strong>État:</strong> {{ etat }}</li>
+    </ul>
+
+    <form method="post">
+        <input type="hidden" name="analyse" value="{{ analyse }}">
+        <input type="hidden" name="etat" value="{{ etat }}">
+        <input type="hidden" name="confirm" value="yes">
+
+        <button type="submit" class="btn btn-success">Confirmer</button>
+        <a href="{{ path('technicien_planning') }}" class="btn btn-danger">Annuler</a>
+    </form>
+{% endblock %}

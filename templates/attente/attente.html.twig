@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réclamations en Attente{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto my-8 p-4 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-6">Réclamations en Attente</h1>
+
+        {% if reclamations is empty %}
+            <p class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
+                Aucune réclamation en attente trouvée.
+            </p>
+        {% else %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto bg-white">
+                    <thead>
+                        <tr class="bg-gray-200 text-left text-gray-600 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6">Description</th>
+                            <th class="py-3 px-6">Date de Soumission</th>
+                            <th class="py-3 px-6">Email du Client</th>
+                            <th class="py-3 px-6">Adresse</th>
+                            <th class="py-3 px-6">Statut</th>
+                            <th class="py-3 px-6">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        {% for reclamation in reclamations %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6">{{ reclamation.description }}</td>
+                                <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('Y-m-d') : '' }}</td>
+                                <td class="py-3 px-6">{{ reclamation.clientmail }}</td>
+                                <td class="py-3 px-6">{{ reclamation.adresse }}</td>
+                                <td class="py-3 px-6">{{ reclamation.etatValidation }}</td>
+                                <td class="py-3 px-6">
+                                    <!-- Formulaire d'Acceptation -->
+                                    <form method="get" action="{{ path('attenteapp_attente_accept_confirm', {id: reclamation.id}) }}" class="inline-block">
+                                        <button type="submit" class="bg-green-500 text-white px-4 py-1 rounded shadow hover:bg-green-600 text-sm">Accepter</button>
+                                    </form>
+                                    
+                                    <!-- Formulaire de Rejet -->
+                                    <form method="get" action="{{ path('attenteapp_attente_reject_confirm', {id: reclamation.id}) }}" class="inline-block ml-2">
+                                        <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded shadow hover:bg-red-600 text-sm">Rejeter</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

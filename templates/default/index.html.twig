@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Dashboard Template{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN (or replace with your local asset path) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    {% block stylesheets %}
+    <!-- Add any extra styles here -->
+    {% endblock %}
+</head>
+
+<body class="bg-white">
+
+    <!-- Top Navbar -->
+    <nav class="bg-[#9eb3c2] text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="{{ asset('path/to/logo.png') }}" alt="Logo" class="h-8 w-8">
+                <span class="font-bold text-lg">My Dashboard</span>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="flex space-x-4 items-center">
+                <form action="#" method="GET" class="hidden md:block">
+                    <div class="relative">
+                        <input type="text" name="search" class="bg-gray-100 text-gray-600 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:bg-white focus:ring-2 focus:ring-gray-600" placeholder="Search">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fa fa-search text-gray-400"></i>
+                        </span>
+                    </div>
+                </form>
+
+                <!-- User Profile -->
+                <a href="#" class="text-white hover:text-gray-200">
+                    <i class="fa fa-user-circle text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-900 text-white h-screen">
+            <div class="p-4 text-lg font-semibold text-white">Dashboard</div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-file"></i>
+                    <span>Orders</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>Products</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-users"></i>
+                    <span>Customers</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
+                    <i class="fa fa-cogs"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 bg-[#4970ba]">
+            {% block content %}
+            <h1 class="text-3xl font-semibold text-white">Welcome to Your Dashboard</h1>
+            <p class="mt-4 text-white">This is your main content area where you can manage everything.</p>
+            {% endblock %}
+        </main>
+    </div>
+
+    {% block javascripts %}
+    <!-- Add any extra scripts here -->
+    {% endblock %}
+</body>
+</html>

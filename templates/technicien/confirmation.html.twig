@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Confirmation</h1>
+    <p>Êtes-vous sûr de vouloir valider cette intervention avec les informations suivantes ?</p>
+
+    <ul>
+        <li>Type: {{ reclamation.type }}</li>
+        <li>Description: {{ reclamation.description }}</li>
+        <li>Analyse: {{ analyse }}</li>
+        <li>État: {{ etat }}</li>
+    </ul>
+
+    <form method="post">
+        <input type="hidden" name="analyse" value="{{ analyse }}">
+        <input type="hidden" name="etat" value="{{ etat }}">
+        <input type="hidden" name="confirm" value="yes">
+        <button type="submit" class="btn btn-success">Confirmer</button>
+        <a href="{{ path('technicien_planning') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+{% endblock %}

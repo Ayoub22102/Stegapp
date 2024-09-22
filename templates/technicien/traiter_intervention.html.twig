@@ -1,0 +1,30 @@
+{# templates/technicien/traiter_intervention.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Traiter Intervention pour la Réclamation</h1>
+
+    <h2>Détails de la Réclamation</h2>
+    <ul>
+        <li>Type: {{ reclamation.type }}</li>
+        <li>Description: {{ reclamation.description }}</li>
+        <li>Adresse: {{ reclamation.adresse }}</li>
+    </ul>
+
+    <h2>Formulaire d'Intervention</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="analyse">Analyse</label>
+            <textarea id="analyse" name="analyse" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="etat">État de l'Intervention</label>
+            <select id="etat" name="etat" class="form-control">
+                <option value="en cours">En cours</option>
+                <option value="terminée">Terminée</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Soumettre l'Intervention</button>
+    </form>
+{% endblock %}
