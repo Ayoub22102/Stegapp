@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Feedback{% endblock %}
+
+{% block body %}
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour afficher les détails du feedback -->
+        <div class="container mx-auto p-8 w-full lg:max-w-4xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Détails du Feedback</h1>
+
+            <!-- Détails du Feedback -->
+            <div class="bg-sky-100 dark:bg-gray-700 border border-blue-500 text-white dark:text-blue-300 p-6 mb-8 rounded-lg shadow-lg">
+                <ul class="list-disc list-inside text-gray-900 dark:text-white">
+                    <li><strong>Nom du Client:</strong> {{ feedback.reclamation.nomClient }} {{ feedback.reclamation.prenomClient }}</li>
+                    <li><strong>Type de Réclamation:</strong> {{ feedback.reclamation.type }}</li>
+                    <li><strong>Description de la Réclamation:</strong> {{ feedback.reclamation.description }}</li>
+                    <li><strong>Technicien Affecté:</strong>
+                        {% if feedback.reclamation.affectationTechnicien|length > 0 %}
+                            {% set technicien = feedback.reclamation.affectationTechnicien|first %}
+                            {{ technicien.nom }} {{ technicien.prenom }}
+                        {% else %}
+                            Aucun technicien assigné
+                        {% endif %}
+                    </li>
+                    <li><strong>Évaluation:</strong>
+                        <div class="flex gap-0.5 mt-1">
+                            {% for i in 1..5 %}
+                                {% if i <= feedback.evaluation %}
+                                    <svg class="h-6 w-6 shrink-0 fill-amber-400" viewBox="0 0 256 256">
+                                        <path d="M239.2 97.4A16.4 16.4 0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4 0 00128 16h0a16.4 16.4 0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5 0 0016.8 97.4 16.8 16.8 0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5 0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1 0 008.7 2.6 16.5 16.5 0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8 0 00239.2 97.4z"></path>
+                                    </svg>
+                                {% else %}
+                                    <svg class="h-6 w-6 shrink-0 fill-gray-300" viewBox="0 0 256 256">
+                                        <path d="M239.2 97.4A16.4 16.4 0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4 0 00128 16h0a16.4 16.4 0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5 0 0016.8 97.4 16.8 16.8 0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5 0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1 0 008.7 2.6 16.5 16.5 0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8 0 00239.2 97.4z"></path>
+                                    </svg>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li><strong>Commentaire:</strong> {{ feedback.commentaire }}</li>
+                </ul>
+            </div>
+
+            <!-- Bouton Retour -->
+            <div class="text-center">
+                <a href="{{ path('feedback_all') }}" class="inline-block px-6 py-3 text-base font-medium text-center text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">
+                    Retour à la liste des Feedbacks
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

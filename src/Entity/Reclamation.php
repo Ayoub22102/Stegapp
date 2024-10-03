@@ -38,10 +38,22 @@ class Reclamation
     private ?string $etat_validation = 'en attente'; // État de validation de la réclamation
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null; // Adresse où la réclamation a été faite
+    private ?string $adresse = null; // Adresse de la reclamation
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $numero_compteur = null; // numéro de compteur
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $clientmail = null; // Email du client ayant soumis la réclamation
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $nom_client = null; // Nom du client ayant soumis la réclamation
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $prenom_client = null; // Prénom du client ayant soumis la réclamation
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $telephone_client = null; // Téléphone du client ayant soumis la réclamation
 
     /**
      * @var Collection<int, Technicien> Techniciens affectés à la réclamation
@@ -86,6 +98,16 @@ class Reclamation
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+        return $this;
+    }
+    public function getNumeroCompteur(): ?int
+    {
+        return $this->numero_compteur;
+    }
+
+    public function setNumeroCompteur(?int $numero_compteur): static
+    {
+        $this->numero_compteur = $numero_compteur;
         return $this;
     }
 
@@ -182,4 +204,36 @@ class Reclamation
 
         return $this;
     }
+    public function getNomClient(): ?string
+{
+    return $this->nom_client;
+}
+
+public function setNomClient(?string $nom_client): static
+{
+    $this->nom_client = $nom_client;
+    return $this;
+}
+
+public function getPrenomClient(): ?string
+{
+    return $this->prenom_client;
+}
+
+public function setPrenomClient(?string $prenom_client): static
+{
+    $this->prenom_client = $prenom_client;
+    return $this;
+}
+
+public function getTelephoneClient(): ?string
+{
+    return $this->telephone_client;
+}
+
+public function setTelephoneClient(?string $telephone_client): static
+{
+    $this->telephone_client = $telephone_client;
+    return $this;
+}
 }

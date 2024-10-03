@@ -21,31 +21,10 @@ class RegistrationFormType extends AbstractType
             ->add('username', EmailType::class, [
                 'label' => 'Adresse e-mail',
                 'help' => 'Entrez une adresse e-mail valide.',
-                'attr' => [
-                    'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
-                    'placeholder' => 'Entrez l\'adresse e-mail',
-                ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Email(['message' => 'Veuillez entrer une adresse e-mail valide.']),
-                ]
             ])
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
                 'help' => 'Entrez votre nom.',
-                'attr' => [
-                    'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
-                    'placeholder' => 'Entrez votre nom',
-                ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 50,
-                        'minMessage' => 'Votre nom doit comporter au moins {{ limit }} caractères',
-                        'maxMessage' => 'Votre nom ne peut pas dépasser {{ limit }} caractères',
-                    ]),
-                ]
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom',
@@ -54,15 +33,6 @@ class RegistrationFormType extends AbstractType
                     'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
                     'placeholder' => 'Entrez votre prénom',
                 ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 50,
-                        'minMessage' => 'Votre prénom doit comporter au moins {{ limit }} caractères',
-                        'maxMessage' => 'Votre prénom ne peut pas dépasser {{ limit }} caractères',
-                    ]),
-                ]
             ])
             ->add('cin', TextType::class, [
                 'label' => 'CIN',
@@ -70,17 +40,19 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
                     'placeholder' => 'Entrez votre CIN',
+                    'inputmode' => 'numeric',  // Requiert une entrée numérique
+                    'pattern' => '[0-9]{8}',   // Limite l'entrée à 8 chiffres
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => 8,
                         'max' => 8,
-                        'exactMessage' => 'CIN doit comporter exactement {{ limit }} chiffres',
+                        'exactMessage' => 'Le CIN doit contenir exactement {{ limit }} chiffres.',
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[0-9]+$/',
-                        'message' => 'CIN ne doit contenir que des chiffres.',
+                        'message' => 'Le CIN ne doit contenir que des chiffres.',
                     ]),
                 ]
             ])
@@ -90,13 +62,15 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
                     'placeholder' => 'Entrez votre téléphone',
+                    'inputmode' => 'numeric',  // Requiert une entrée numérique
+                    'pattern' => '[0-9]{8}',   // Limite l'entrée à 8 chiffres
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length([
                         'min' => 8,
                         'max' => 8,
-                        'exactMessage' => 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres',
+                        'exactMessage' => 'Le numéro de téléphone doit contenir exactement {{ limit }} chiffres.',
                     ]),
                     new Assert\Regex([
                         'pattern' => '/^[0-9]+$/',
@@ -108,18 +82,9 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => [
                     'label' => 'Mot de passe',
-                    'help' => 'Votre mot de passe doit comporter au moins 6 caractères.',
-                    'attr' => [
-                        'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
-                        'placeholder' => 'Entrez un mot de passe',
-                    ],
                 ],
                 'second_options' => [
                     'label' => 'Vérification du mot de passe',
-                    'attr' => [
-                        'class' => 'w-full px-3 py-2 border border-gray-300 rounded-md',
-                        'placeholder' => 'Confirmez le mot de passe',
-                    ],
                 ],
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
                 'mapped' => false,
@@ -136,7 +101,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'J\'accepte les termes et conditions',
-                'mapped' => false, // This field should not be mapped to the entity
+                'mapped' => false, // Ce champ n'est pas mappé à l'entité
                 'constraints' => [
                     new Assert\IsTrue([
                         'message' => 'Vous devez accepter les termes et conditions.',
@@ -149,6 +114,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Client::class,
+            'csrf_protection' => false, // Disable CSRF protection for this form
         ]);
     }
 }

@@ -40,6 +40,21 @@ class ReclamationType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('numero_compteur', TextType::class, [
+                'label' => 'Numéro de compteur',
+                'attr' => [
+                    'class' => 'w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    'placeholder' => 'Entrez le numero de compteur',
+                ],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Le numero de compteur ne peut pas être vide.',
+                    ]),
+                    new Assert\Length([
+                        'min' => 5,
+                        'minMessage' => 'Le numero de compteur doit contenir au moins {{ limit }} caractères.',
+                    ]),
+                ]])
             ->add('adresse', TextType::class, [
                 'label' => 'Adresse',
                 'attr' => [
@@ -55,6 +70,35 @@ class ReclamationType extends AbstractType
                         'minMessage' => 'L\'adresse doit contenir au moins {{ limit }} caractères.',
                     ]),
                 ],
+            ])
+            ->add('ville', ChoiceType::class, [
+                'label' => 'Ville',
+                'choices' => [
+                    'Tunis' => 'Tunis',
+                    'Ariana' => 'Ariana',
+                    'Ben Arous' => 'Ben Arous',
+                    'Manouba' => 'Manouba',
+                    'Bizerte' => 'Bizerte',
+                    'Béja' => 'Béja',
+                    'Kef' => 'Kef',
+                    'Siliana' => 'Siliana',
+                    'Nabeul' => 'Nabeul',
+                    'Zaghouan' => 'Zaghouan',
+                    'Sousse' => 'Sousse',
+                    'Monastir' => 'Monastir',
+                    'Mahdia' => 'Mahdia',
+                    'Sfax' => 'Sfax',
+                    'Kairouan' => 'Kairouan',
+                    'Kasserine' => 'Kasserine',
+                    'Sidi Bouzid' => 'Sidi Bouzid',
+                    'Gabès' => 'Gabès',
+                    'Medenine' => 'Medenine',
+                    'Tataouine' => 'Tataouine',
+                    'Gafsa' => 'Gafsa',
+                    'Tozeur' => 'Tozeur',
+                    'Kebili' => 'Kebili',
+                ],
+                'placeholder' => 'Sélectionnez une ville',
             ]);
     }
 

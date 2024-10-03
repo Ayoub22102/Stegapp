@@ -1,31 +1,91 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Interventions Terminées{% endblock %}
 
 {% block body %}
-    <h1>Interventions Terminées</h1>
+<section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+    <!-- Section pour afficher les interventions terminées -->
+    <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Interventions Terminées</h1>
+        
+        {% if interventions is empty %}
+            <!-- Message quand il n'y a aucune intervention terminée -->
+            <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
+                Aucune intervention terminée trouvée.
+            </p>
+        {% else %}
+            <!-- Tableau des interventions terminées -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto bg-sky-100 dark:bg-gray-800 rounded-lg shadow-lg">
+                    <thead>
+                        <tr class="bg-gray-300 dark:bg-gray-700 text-left text-gray-700 dark:text-white uppercase text-sm leading-normal">
+                            <th class="py-3 px-6">Type de Réclamation</th>
+                            <th class="py-3 px-6">Description</th>
+                            <th class="py-3 px-6">Date de Soumission</th>
+                            <th class="py-3 px-6">Client</th>
+                            <th class="py-3 px-6">Téléphone du Client</th>
+                            <th class="py-3 px-6">Analyse</th>
+                            <th class="py-3 px-6">Date de l'Intervention</th>
+                            <th class="py-3 px-6">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 dark:text-white text-sm font-light">
+                        {% for intervention in interventions %}
+                            <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                <td class="py-3 px-6">{{ intervention.type }}</td>
+                                <td class="py-3 px-6">{{ intervention.description }}</td>
+                                <td class="py-3 px-6">{{ intervention.dateSoumission ? intervention.dateSoumission|date('d-m-Y') : '' }}</td>
+                                <td class="py-3 px-6">{{ intervention.nomClient }} {{ intervention.prenomClient }}</td>
+                                <td class="py-3 px-6">{{ intervention.telephoneClient }}</td>
+                                <td class="py-3 px-6">{{ intervention.analyse }}</td>
+                                <td class="py-3 px-6">{{ intervention.date ? intervention.date|date('d-m-Y') : '' }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <button onclick="showConfirmationPopup({{ intervention.id }})" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 text-sm">
+                                        Clôturer
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</section>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Analyse</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for intervention in interventions %}
-                <tr>
-                    <td>{{ intervention.id }}</td>
-                    <td>{{ intervention.analyse }}</td>
-                    <td>{{ intervention.date|date('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ path('cloture_cloturer', {id: intervention.id}) }}">Clôturer</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- Confirmation Popup Modal -->
+<div id="confirmationPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-sm w-full shadow-lg">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Confirmer la Clôture</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">Êtes-vous sûr de vouloir clôturer cette intervention?</p>
+        <form id="closureForm" method="post">
+            <div class="flex justify-between">
+                <button type="button" onclick="closeConfirmationPopup()" class="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700">
+                    Non
+                </button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    Oui
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showConfirmationPopup(interventionId) {
+        // Show the confirmation popup
+        const popup = document.getElementById('confirmationPopup');
+        popup.classList.remove('hidden');
+
+        // Set the form action to the correct intervention closure URL
+        const closureForm = document.getElementById('closureForm');
+        closureForm.action = "{{ path('cloture_cloturer', {id: 'INTERVENTION_ID'}) }}".replace('INTERVENTION_ID', interventionId);
+    }
+
+    function closeConfirmationPopup() {
+        // Hide the confirmation popup
+        const popup = document.getElementById('confirmationPopup');
+        popup.classList.add('hidden');
+    }
+</script>
 {% endblock %}

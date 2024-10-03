@@ -116,7 +116,11 @@ public function assignTechnician(Reclamation $reclamation, Request $request, Ent
                 $intervention->setDescription($reclamation->getDescription());
                 $intervention->setDateSoumission($reclamation->getDateSoumission());
                 $intervention->setAdresse($reclamation->getAdresse());
+                $intervention->setville($reclamation->getville());
                 $intervention->setClientmail($reclamation->getClientmail());
+                $intervention->setNomClient($reclamation->getNomClient());
+                $intervention->setPrenomClient($reclamation->getPrenomClient());
+                $intervention->setTelephoneClient($reclamation->getTelephoneClient());
                 $intervention->setEtatValidation('acceptée');
                 $intervention->addAffectationTechnicien($technician);
 
@@ -136,6 +140,7 @@ public function assignTechnician(Reclamation $reclamation, Request $request, Ent
 
         $this->addFlash('error', 'Technicien non trouvé.');
     }
+    
 
     return $this->render('attente/assign_technician.html.twig', [
         'reclamation' => $reclamation,

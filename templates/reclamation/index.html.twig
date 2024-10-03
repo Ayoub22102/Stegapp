@@ -2,114 +2,115 @@
 
 {% block title %}Mes Réclamations{% endblock %}
 
-{% block stylesheets %}
-<style>
-    body {
-        background-color: #f0f4f8; /* Light blue-gray background */
-    }
-    .gradient-header {
-        background: linear-gradient(to right, #4299e1, #38b2ac); /* Matching the navbar gradient */
-        color: white;
-        padding: 12px;
-        border-radius: 8px 8px 0 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    }
-    .action-buttons a,
-    .action-buttons button {
-        transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-    .action-buttons a:hover,
-    .action-buttons button:hover {
-        background-color: #2b6cb0; /* Darker shade of blue for hover state */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adding depth on hover */
-    }
-    .table-header {
-        background-color: #edf2f7; /* Light gray background */
-        text-transform: uppercase;
-        font-size: 0.875rem;
-        font-weight: bold;
-    }
-    .table-row {
-        transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-    .table-row:hover {
-        background-color: #f7fafc; /* Light hover effect */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
-    }
-    .btn-primary {
-        background: linear-gradient(to right, #4299e1, #38b2ac); /* Gradient button */
-        color: white;
-        padding: 8px 16px;
-        border-radius: 4px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-    .btn-primary:hover {
-        background: linear-gradient(to right, #3182ce, #2c7a7b); /* Darker gradient on hover */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-</style>
-{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
-        <div class="gradient-header">
-            <h1 class="text-2xl font-bold">Mes Réclamations</h1>
-        </div>
+<section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+    <!-- Formulaire de recherche -->
+    <div class="container bg-sky-900 dark:bg-sky-900 mx-auto mb-6 w-3/4 lg:w-1/2">
+        <form method="GET" action="{{ path('app_reclamation_index') }}" class="relative">
+            <input type="text" name="search" placeholder="Rechercher des réclamations..."
+                   class="w-full p-2 pr-10 border border-gray-300 rounded-lg bg-sky-200 text-black dark:bg-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   value="{{ app.request.query.get('search') }}">
+            <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-black dark:text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </button>
+        </form>
+    </div>
 
+    <!-- Liste des réclamations sous forme de cartes -->
+    <div class="container mx-auto w-3/4 lg:w-4/5 bg-transparent grid grid-cols-1 lg:grid-cols-2 gap-6">
         {% if reclamations is empty %}
-            <p class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded mt-4">
+            <!-- Message si aucune réclamation -->
+            <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
                 Vous n'avez soumis aucune réclamation pour le moment.
             </p>
         {% else %}
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full table-auto bg-white rounded-lg shadow-md">
-                    <thead class="table-header">
-                        <tr>
-                            <th class="py-3 px-6">Type</th>
-                            <th class="py-3 px-6">Description</th>
-                            <th class="py-3 px-6">Date de soumission</th>
-                            <th class="py-3 px-6">État de validation</th>
-                            <th class="py-3 px-6">Adresse</th>
-                            <th class="py-3 px-6">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700 text-sm font-light">
-                        {% for reclamation in reclamations %}
-                            <tr class="border-b border-gray-200 table-row">
-                                <td class="py-3 px-6">{{ reclamation.type }}</td>
-                                <td class="py-3 px-6">{{ reclamation.description }}</td>
-                                <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</td>
-                                <td class="py-3 px-6">{{ reclamation.etatValidation }}</td>
-                                <td class="py-3 px-6">{{ reclamation.adresse }}</td>
-                                <td class="py-3 px-6 flex items-center space-x-2 action-buttons">
-                                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="bg-blue-500 text-white px-4 py-1 rounded shadow hover:bg-blue-600">
-                                        Voir
-                                    </a>
-
-                                    {% if reclamation.etatValidation == 'en attente' %}
-                                        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="bg-yellow-500 text-white px-4 py-1 rounded shadow hover:bg-yellow-600">
-                                            Modifier
-                                        </a>
-                                        <form method="post" action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" class="inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-                                            <button class="bg-red-500 text-white px-4 py-1 rounded shadow hover:bg-red-600" type="submit">
-                                                Supprimer
-                                            </button>
-                                        </form>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+            {% for reclamation in reclamations %}
+                <div class="bg-sky-200 dark:bg-slate-950 shadow-lg rounded-lg overflow-hidden my-6 grid grid-cols-[auto,1fr] border border-gray-300">
+                    <!-- Sidebar Vertical Link -->
+                    <div class="bg-sky-100 dark:bg-slate-800 px-5 py-2 flex items-center justify-center __col h-full">
+                        <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="text-black dark:text-white font-medium hover:text-blue-800 transform rotate-180 writing-mode-vertical-lr">
+                            Voir plus
+                        </a>
+                    </div>
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">{{ reclamation.type }}</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Numéro de compteur : {{ reclamation.numeroCompteur }}</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">{{ reclamation.description }}</p>
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            Date de soumission: {{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}
+                        </div>
+                        <div>
+                            {% set status = reclamation.etatValidation|lower %}
+                            {% if status == 'acceptée' %}
+                                <span class="bg-green-500 text-white py-1 px-2 rounded-full text-xs">Acceptée</span>
+                            {% elseif status == 'en attente' %}
+                                <span class="bg-orange-500 text-white py-1 px-2 rounded-full text-xs">En attente</span>
+                            {% elseif status == 'refusée' %}
+                                <span class="bg-red-500 text-white py-1 px-2 rounded-full text-xs">Refusée</span>
+                             {% elseif status == 'clôturée' %}
+                                <span class="bg-gray-500 text-white py-1 px-2 rounded-full text-xs">Cloturée</span>
+                            {% else %}
+                                <span class="bg-gray-500 text-white py-1 px-2 rounded-full text-xs">Inconnu</span>
+                            {% endif %}
+                        </div>
+                        {% if status == 'en attente' %}
+                            <div class="mt-4">
+                                <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="mr-2 text-yellow-500 dark:text-yellow-300 hover:underline">Modifier</a>
+                                <button onclick="showDeleteConfirmationPopup('{{ reclamation.id }}', '{{ csrf_token('delete' ~ reclamation.id) }}')" class="ml-2 text-red-500 dark:text-red-300 hover:underline">Supprimer</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         {% endif %}
+    </div>
+</section>
 
-        <div class="mt-4 text-center">
-            <a href="{{ path('app_reclamation_new') }}" class="btn-primary">
-                Créer une nouvelle réclamation
-            </a>
+<!-- Confirmation Popup Modal -->
+<div id="deleteConfirmationPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-sm w-full shadow-lg">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Confirmer la Suppression</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">Êtes-vous sûr de vouloir supprimer cette réclamation?</p>
+        <div class="flex justify-between">
+            <button type="button" onclick="closeDeleteConfirmationPopup()" class="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700">
+                Non
+            </button>
+            <form id="deleteForm" method="post">
+                <input type="hidden" name="_token" value="">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                    Oui
+                </button>
+            </form>
         </div>
     </div>
+</div>
+
+<script>
+    function showDeleteConfirmationPopup(reclamationId, csrfToken) {
+        // Show the confirmation popup
+        const popup = document.getElementById('deleteConfirmationPopup');
+        popup.classList.remove('hidden');
+
+        // Set the form action to the correct reclamation deletion URL
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = "{{ path('app_reclamation_delete', {'id': 'RECLAMATION_ID'}) }}".replace('RECLAMATION_ID', reclamationId);
+
+        // Set the CSRF token dynamically
+        deleteForm.querySelector('[name="_token"]').value = csrfToken;
+    }
+
+    function closeDeleteConfirmationPopup() {
+        // Hide the confirmation popup
+        const popup = document.getElementById('deleteConfirmationPopup');
+        popup.classList.add('hidden');
+    }
+</script>
+
+<style>
+    .__col {
+        writing-mode: vertical-lr;
+    }
+</style>
 {% endblock %}

@@ -3,21 +3,45 @@
 {% block title %}Confirmation d'Intervention{% endblock %}
 
 {% block body %}
-    <h1>Confirmer l'Intervention</h1>
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour confirmer l'intervention -->
+        <div class="container mx-auto p-8 w-full lg:max-w-4xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Confirmer l'Intervention</h1>
 
-    <p>Êtes-vous sûr de vouloir finaliser cette intervention avec les détails suivants?</p>
+            <!-- Détails de la Réclamation -->
+            <div class="bg-sky-100 dark:bg-gray-700 border border-blue-500 text-white dark:text-blue-300 p-6 mb-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Détails de la Réclamation</h2>
+                <ul class="list-disc list-inside text-gray-900 dark:text-white">
+                    <li><strong>Type :</strong> {{ reclamation.type }}</li>
+                    <li><strong>Description :</strong> {{ reclamation.description }}</li>
+                    <li><strong>Adresse :</strong> {{ reclamation.adresse }}</li>
+                    <li><strong>Ville :</strong> {{ reclamation.ville }}</li>
 
-    <ul>
-        <li><strong>Analyse:</strong> {{ analyse }}</li>
-        <li><strong>État:</strong> {{ etat }}</li>
-    </ul>
+                </ul>
+            </div>
 
-    <form method="post">
-        <input type="hidden" name="analyse" value="{{ analyse }}">
-        <input type="hidden" name="etat" value="{{ etat }}">
-        <input type="hidden" name="confirm" value="yes">
+            <!-- Détails de l'Intervention -->
+            <div class="bg-sky-100 dark:bg-gray-700 border border-blue-500 text-white dark:text-blue-300 p-6 mb-8 rounded-lg shadow-lg">
+                <p class="mb-4 text-gray-900 dark:text-white">Êtes-vous sûr de vouloir finaliser cette intervention avec les détails suivants ?</p>
+                <ul class="list-disc list-inside text-gray-900 dark:text-white">
+                    <li><strong>Analyse :</strong> {{ analyse }}</li>
+                    <li><strong>État :</strong> {{ etat }}</li>
+                </ul>
+            </div>
 
-        <button type="submit" class="btn btn-success">Confirmer</button>
-        <a href="{{ path('technicien_planning') }}" class="btn btn-danger">Annuler</a>
-    </form>
+            <!-- Boutons de confirmation ou annulation -->
+            <form method="post" class="w-full text-center">
+                <input type="hidden" name="analyse" value="{{ analyse }}">
+                <input type="hidden" name="etat" value="{{ etat }}">
+                <input type="hidden" name="confirm" value="yes">
+
+                <button type="submit" class="inline-block w-full lg:w-auto px-6 py-3 text-base font-medium text-center text-white bg-green-500 rounded-lg shadow-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
+                    Confirmer
+                </button>
+                <a href="{{ path('technicien_planning') }}" class="inline-block w-full lg:w-auto px-6 py-3 mt-4 lg:mt-0 text-base font-medium text-center text-white bg-red-500 rounded-lg shadow-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 ml-4">
+                    Annuler
+                </a>
+            </form>
+        </div>
+    </section>
 {% endblock %}

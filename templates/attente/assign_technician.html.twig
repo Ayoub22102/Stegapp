@@ -1,22 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Assigner un Technicien{% endblock %}
+
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold mb-6">Assigner un Technicien à la Réclamation #{{ reclamation.id }}</h1>
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour assigner un technicien à une réclamation -->
+        <div class="container mx-auto p-8 w-full lg:max-w-3xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Assigner un Technicien à la Réclamation #{{ reclamation.id }}</h1>
 
-        <form method="POST" action="{{ path('attenteapp_attente_assign_technician', { id: reclamation.id }) }}">
-            <div class="mb-4">
-                <label for="technician_id" class="block text-sm font-medium text-gray-700">Sélectionner un Technicien</label>
-                <select class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="technician_id" name="technician_id">
-                    {% for technician in technicians %}
-                        <option value="{{ technician.id }}">{{ technician.nom }} {{ technician.prenom }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <!-- Formulaire pour sélectionner un technicien -->
+            <form method="POST" action="{{ path('attenteapp_attente_assign_technician', { id: reclamation.id }) }}" class="space-y-6">
+                <div class="mb-4">
+                    <label for="technician_id" class="block text-lg font-medium text-gray-900 dark:text-white mb-2">Sélectionner un Technicien</label>
+                    <select id="technician_id" name="technician_id" class="mt-1 block w-full px-3 py-3 border border-gray-300 bg-sky-100 text-gray-900 dark:bg-slate-800 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        {% for technician in technicians %}
+                            <option value="{{ technician.id }}">{{ technician.nom }} {{ technician.prenom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow">
-                Assigner le Technicien
-            </button>
-        </form>
-    </div>
+                <!-- Bouton d'assignation -->
+                <div class="text-center">
+                    <button type="submit" class="w-full lg:w-auto px-6 py-3 text-base font-medium text-center text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">
+                        Assigner le Technicien
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}

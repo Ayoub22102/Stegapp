@@ -55,11 +55,15 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
-    Encore.enableSassLoader();
+// webpack.config.js
+Encore
+    .addStyleEntry('build/tailwind', './assets/styles/tailwind.css')
+    // other configurations
+
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
-
+    .enablePostCssLoader()
     // uncomment if you use React
     //.enableReactPreset()
 

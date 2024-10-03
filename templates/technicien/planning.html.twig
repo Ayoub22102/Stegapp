@@ -1,40 +1,52 @@
 {% extends 'base.html.twig' %}
+{% block title %}Votre Planning{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold mb-6">Votre Planning</h1>
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour afficher le planning des techniciens -->
+        <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Votre Planning</h1>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-300">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Soumission</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adresse</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reclamation in reclamations %}
-                        <tr class="border-t border-gray-200">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ reclamation.type }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ reclamation.description }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ reclamation.dateSoumission|date('Y-m-d') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ reclamation.adresse }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ path('technicien_traiter_intervention', {id: reclamation.id}) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow">
-                                    Traiter Intervention
-                                </a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-sm text-gray-500">Aucune réclamation assignée.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% if reclamations is empty %}
+                <!-- Message quand il n'y a aucune réclamation assignée -->
+                <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
+                    Aucune réclamation assignée.
+                </p>
+            {% else %}
+                <!-- Tableau des réclamations assignées au technicien -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto bg-sky-100 dark:bg-gray-800 rounded-lg shadow-lg">
+                        <thead>
+                            <tr class="bg-gray-300 dark:bg-gray-700 text-left text-gray-700 dark:text-white uppercase text-sm leading-normal">
+                                <th class="py-3 px-6">Type de Réclamation</th>
+                                <th class="py-3 px-6">Description</th>
+                                <th class="py-3 px-6">Date de Soumission</th>
+                                <th class="py-3 px-6">Client</th>
+                                <th class="py-3 px-6">Téléphone du Client</th>
+                                <th class="py-3 px-6">Adresse</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 dark:text-white text-sm font-light">
+                            {% for reclamation in reclamations %}
+                                <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <td class="py-3 px-6">{{ reclamation.type }}</td>
+                                    <td class="py-3 px-6">{{ reclamation.description }}</td>
+                                    <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</td>
+                                    <td class="py-3 px-6">{{ reclamation.nomClient }} {{ reclamation.prenomClient }}</td>
+                                    <td class="py-3 px-6">{{ reclamation.telephoneClient }}</td>
+                                    <td class="py-3 px-6">{{ reclamation.adresse }}</td>
+                                    <td class="py-3 px-6 text-center">
+                                        <a href="{{ path('technicien_traiter_intervention', {id: reclamation.id}) }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 text-sm">
+                                            Traiter Intervention
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
         </div>
-    </div>
+    </section>
 {% endblock %}

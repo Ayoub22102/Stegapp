@@ -3,29 +3,41 @@
 {% block title %}Donnez votre Feedback{% endblock %}
 
 {% block body %}
-<h1>Liste des Interventions Clôturées</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Analyse</th>
-            <th>Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for reclamation in reclamations %}
-            <tr>
-                <td>{{ reclamation.id }}</td>
-                <td>{{ reclamation.analyse }}</td>
-                <td>{{ reclamation.date|date('Y-m-d') }}</td>
-                <td>
-                    <a href="{{ path('feedback_submit', {id: reclamation.id}) }}">Donnez Votre Feedback</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+<section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+    <!-- Section pour afficher les interventions clôturées -->
+    <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Donnez votre Avis</h1>
+        
+        {% if reclamations is empty %}
+            <!-- Message quand il n'y a aucune intervention clôturée -->
+            <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
+                Aucune réclamation clôturée trouvée.
+            </p>
+        {% else %}
+            <!-- Cartes des interventions clôturées -->
+            <div class="flex flex-wrap justify-center gap-8">
+                {% for reclamation in reclamations %}
+                    <div class="w-full md:w-1/2 lg:w-1/3 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden my-4">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Réclamation du : {{ reclamation.date ? reclamation.date|date('d-m-Y') : '' }}</h2>
+                            <p class="text-gray-800 dark:text-gray-200 mb-2"><strong>Type :</strong> {{ reclamation.type }}</p>
+                            <p class="text-gray-800 dark:text-gray-200 mb-2"><strong>Description :</strong> {{ reclamation.description }}</p>
+                            {% if reclamation.affectationTechnicien|length > 0 %}
+                                {% set technicien = reclamation.affectationTechnicien|first %}
+                                <p class="text-gray-800 dark:text-gray-200 mb-2"><strong>Technicien Affecté :</strong> {{ technicien.nom }} {{ technicien.prenom }}</p>
+                            {% else %}
+                                <p class="text-gray-800 dark:text-gray-200 mb-2"><strong>Technicien Affecté :</strong> Aucun technicien assigné</p>
+                            {% endif %}
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-700 px-5 py-4 flex items-center justify-center">
+                            <a href="{{ path('feedback_submit', {id: reclamation.id}) }}" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 text-sm">
+                                Donnez Votre Feedback
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

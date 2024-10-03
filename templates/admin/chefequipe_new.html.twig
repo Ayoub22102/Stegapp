@@ -2,75 +2,146 @@
 
 {% block title %}Créer un Nouveau Chef d'Équipe{% endblock %}
 
-{% block stylesheets %}
-<style>
-    body {
-        background-color: #f0f4f8;
-    }
-</style>
-{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg max-w-md">
-        <h1 class="text-2xl font-bold mb-6 text-center">Créer un Nouveau Chef d'Équipe</h1>
+<section class="bg-sky-900 min-h-screen flex justify-center items-center">
+    <div class="py-10 px-6 mx-auto max-w-screen-2xl lg:py-20 flex justify-center">
 
-        {# Form Errors #}
-        {% if form.vars.errors|length > 0 %}
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded">
-                <ul>
-                    {% for error in form.vars.errors %}
-                        <li>{{ error.message }}</li>
-                    {% endfor %}
-                </ul>
+        <!-- Formulaire de création de chef d'équipe avec une taille augmentée de 20% -->
+        <div class="w-full lg:max-w-2xl p-8 space-y-10 sm:p-10 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white text-center">Créer un Nouveau Chef d'Équipe</h2>
+            
+            <!-- Démarrer le formulaire -->
+            {{ form_start(form, {'attr': {'class': 'mt-8 space-y-6'}}) }}
+
+            <!-- Champ Nom -->
+            <div class="relative">
+                {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.nom, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.nom.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez le nom'
+                    }}) }}
+                    {% if form.nom.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.nom.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.nom) }}</p>
+                {% endif %}
             </div>
-        {% endif %}
 
-        {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+            <!-- Champ Prénom -->
+            <div class="relative">
+                {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.prenom, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.prenom.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez le prénom'
+                    }}) }}
+                    {% if form.prenom.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.prenom.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.prenom) }}</p>
+                {% endif %}
+            </div>
 
-        <div>
-            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.nom, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.nom) }}
+            <!-- Champ CIN -->
+            <div class="relative">
+                {{ form_label(form.cin, 'CIN', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.cin, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.cin.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez le CIN'
+                    }}) }}
+                    {% if form.cin.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.cin.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.cin) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Champ Téléphone -->
+            <div class="relative">
+                {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.telephone, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.telephone.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez le numéro de téléphone'
+                    }}) }}
+                    {% if form.telephone.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.telephone.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.telephone) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Champ Matricule -->
+            <div class="relative">
+                {{ form_label(form.username, 'Nom d\'Utilisateur', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.username, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.username.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez le nom d\'utilisateur'
+                    }}) }}
+                    {% if form.username.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.username.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.username) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Champ Mot de Passe -->
+            <div class="relative">
+                {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="relative">
+                    {{ form_widget(form.password, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 pr-10' ~ (form.password.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': '••••••••'
+                    }}) }}
+                </div>
+                {% if form.password.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.password) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Bouton Enregistrer -->
+            <button type="submit" class="w-full px-6 py-4 text-lg font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Enregistrer</button>
+
+            <!-- Terminer le formulaire -->
+            {{ form_end(form) }}
+
+            <a href="{{ path('admin_chefequipe_index') }}" class="block text-center bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 mt-4">
+                Retour à la liste
+            </a>
         </div>
-
-        <div>
-            {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.prenom, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.prenom) }}
-        </div>
-
-        <div>
-            {{ form_label(form.cin, 'CIN', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.cin, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.cin) }}
-        </div>
-
-        <div>
-            {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.telephone, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.telephone) }}
-        </div>
-
-        <div>
-            {{ form_label(form.username, 'Nom d\'Utilisateur', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.username, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.username) }}
-        </div>
-
-        <div>
-            {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'block text-gray-700 font-semibold'}}) }}
-            {{ form_widget(form.password, {'attr': {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}}) }}
-            {{ form_errors(form.password) }}
-        </div>
-
-        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
-            Enregistrer
-        </button>
-
-        {{ form_end(form) }}
-
-        <a href="{{ path('admin_chefequipe_index') }}" class="block text-center mt-4 text-blue-500 hover:text-blue-600">
-            Retour à la liste
-        </a>
     </div>
+</section>
 {% endblock %}

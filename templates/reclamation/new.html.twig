@@ -2,98 +2,122 @@
 
 {% block title %}Soumettre une nouvelle Réclamation{% endblock %}
 
-{% block stylesheets %}
-<style>
-    /* Custom background color for the page */
-    body {
-        background-color: #f0f4f8; /* Light blue-gray background */
-    }
-
-    /* Custom radio button styles */
-    .radio-group {
-        display: flex;
-        gap: 10px;
-    }
-
-    .radio-option {
-        display: inline-block;
-        padding: 10px 20px;
-        border: 2px solid #e2e8f0;
-        border-radius: 5px;
-        background-color: #fff;
-        color: #333;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.2s ease;
-        width: 100px;
-    }
-
-    .radio-option:hover {
-        border-color: #4a90e2;
-        background-color: #ebf8ff;
-    }
-
-    /* Styling for the radio input */
-    .radio-option input[type="radio"] {
-        display: none;
-    }
-
-    /* Styling the label when the radio button is selected */
-    .radio-option input[type="radio"]:checked + label {
-        background-color: #4a90e2;
-        color: white;
-        border-color: #4a90e2;
-    }
-</style>
-{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto mt-10">
-        <h1 class="text-center text-3xl font-bold mb-6">Soumettre une nouvelle Réclamation</h1>
+<section class="bg-sky-900 min-h-screen flex justify-center items-center">
+    <div class="py-8 px-4 mx-auto max-w-screen-2xl lg:py-16 flex justify-center">
 
-        <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="p-6">
-                <!-- Start the form and ensure it's correctly submitted -->
-                {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+        <!-- Formulaire de soumission de réclamation avec une taille augmentée de 20% -->
+        <div class="w-full lg:max-w-2xl p-8 space-y-10 sm:p-10 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white text-center">Soumettre une nouvelle Réclamation</h2>
+            
+            <!-- Démarrer le formulaire -->
+            {{ form_start(form, {'attr': {'class': 'mt-8 space-y-6'}}) }}
 
-                <!-- Automatically generated radio button group for type of reclamation -->
-                <div class="mb-4">
-                    {{ form_label(form.type, 'Type de Réclamation', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-                    {{ form_widget(form.type, {'attr': {'class': 'radio-group'}}) }}
-                    {{ form_errors(form.type) }}
+            <!-- Type de Réclamation (groupe de boutons radio stylisé) -->
+            <div>
+                <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Type de Réclamation</label>
+                <div class="flex flex-wrap gap-4">
+                    {% for child in form.type %}
+                        <label class="inline-flex items-center bg-sky-100 dark:bg-gray-700 p-3 rounded-lg cursor-pointer hover:bg-sky-300 dark:hover:bg-gray-600">
+                            {{ form_widget(child, {'attr': {'class': 'form-radio text-sky-500 focus:ring-blue-500'}}) }}
+                            <span class="ml-2 text-gray-900 dark:text-white">{{ child.vars.label }}</span>
+                        </label>
+                    {% endfor %}
                 </div>
-
-                <!-- Description field -->
-                <div class="mb-4">
-                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-                    {{ form_widget(form.description, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-                    {{ form_errors(form.description) }}
-                </div>
-
-                <!-- Address field -->
-                <div class="mb-4">
-                    {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-                    {{ form_widget(form.adresse, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-                    {{ form_errors(form.adresse) }}
-                </div>
-
-                <!-- Submit button -->
-                <div class="mt-6">
-                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Soumettre
-                    </button>
-                </div>
-
-                <!-- End the form -->
-                {{ form_end(form) }}
+                {% if form.type.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.type) }}</p>
+                {% endif %}
             </div>
 
-            <!-- Back to list button -->
-            <div class="mt-4">
-                <a href="{{ path('app_reclamation_index') }}" class="block text-center bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
-                    Retour à la liste
-                </a>
+             <!-- Champ numero_compteur-->
+            <div class="relative">
+                {{ form_label(form.numero_compteur, 'Numéro de compteur', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.numero_compteur, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.numero_compteur.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez votre Numéro de compteur'
+                    }}) }}
+                    {% if form.numero_compteur.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.numero_compteur.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.numero_compteur) }}</p>
+                {% endif %}
             </div>
+
+            <!-- Champ Description -->
+            <div class="relative">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.description, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.description.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez la description de votre réclamation'
+                    }}) }}
+                    {% if form.description.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.description.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.description) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Champ Adresse -->
+            <div class="relative">
+                {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.adresse, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.adresse.vars.errors|length > 0 ? ' border-red-500' : ''),
+                        'placeholder': 'Entrez votre adresse'
+                    }}) }}
+                    {% if form.adresse.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.adresse.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.adresse) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Champ Ville (menu déroulant) -->
+            <div class="relative">
+                {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'block mb-2 text-lg font-medium text-gray-900 dark:text-white'}}) }}
+                <div class="flex items-center">
+                    {{ form_widget(form.ville, {'attr': {
+                        'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3' ~ (form.ville.vars.errors|length > 0 ? ' border-red-500' : '')
+                    }}) }}
+                    {% if form.ville.vars.errors|length > 0 %}
+                        <span class="ml-2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if form.ville.vars.errors|length > 0 %}
+                    <p class="text-red-500 mt-2 text-sm">{{ form_errors(form.ville) }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Bouton Soumettre -->
+            <button type="submit" class="w-full px-6 py-4 text-lg font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Soumettre</button>
+
+            <!-- Terminer le formulaire -->
+            {{ form_end(form) }}
         </div>
     </div>
+</section>
 {% endblock %}

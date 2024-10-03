@@ -1,129 +1,206 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer compte client{% endblock %}
-
-{% block stylesheets %}
-    <!-- Inclure Tailwind CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
-{% endblock %}
-
+{% block title %}Créer un compte{% endblock %}
 {% block body %}
-<div class="flex justify-center items-center min-h-screen">
-    <div class="max-w-[936px] mx-auto">
-        <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
-            <div class="relative grid mx-4 mb-4 -mt-6 overflow-hidden text-white shadow-lg h-24 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
-                <h3 class="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
-                    Créer compte client
-                </h3>
-            </div>
-
-            <div class="flex flex-col gap-6 p-6">
-                {{ form_start(registrationClientForm) }}
-
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.username, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Adresse e-mail</label>
+<section class="bg-sky-900 min-h-screen flex justify-center items-center">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
+        
+        <!-- Formulaire de création de compte à gauche -->
+        <div class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Créer un compte</h2>
+            <!-- Start Form -->
+            <form method="post" action="{{ path('app_register_Client') }}" class="mt-8 space-y-6">
+                
+                <!-- Champ Email -->
+                <div class="relative">
+                    <label for="registrationClientForm_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre email</label>
+                    <div class="flex items-center">
+                        {{ form_widget(registrationClientForm.username, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+                            'placeholder': 'nom@domaine.com',
+                            'id': 'registrationClientForm_username'
+                        }}) }}
+                        {% if registrationClientForm.username.vars.errors|length > 0 %}
+                            <span class="ml-2 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                    </div>
                     {{ form_errors(registrationClientForm.username) }}
                 </div>
 
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.nom, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Nom</label>
+                <!-- Champ Nom -->
+                <div class="relative">
+                    <label for="registrationClientForm_nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                    <div class="flex items-center">
+                        {{ form_widget(registrationClientForm.nom, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+                            'placeholder': 'Votre nom',
+                            'id': 'registrationClientForm_nom'
+                        }}) }}
+                        {% if registrationClientForm.nom.vars.errors|length > 0 %}
+                            <span class="ml-2 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                    </div>
                     {{ form_errors(registrationClientForm.nom) }}
                 </div>
 
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.prenom, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Prénom</label>
+                <!-- Champ Prénom -->
+                <div class="relative">
+                    <label for="registrationClientForm_prenom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prénom</label>
+                    <div class="flex items-center">
+                        {{ form_widget(registrationClientForm.prenom, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+                            'placeholder': 'Votre prénom',
+                            'id': 'registrationClientForm_prenom'
+                        }}) }}
+                        {% if registrationClientForm.prenom.vars.errors|length > 0 %}
+                            <span class="ml-2 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                    </div>
                     {{ form_errors(registrationClientForm.prenom) }}
                 </div>
 
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.cin, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">CIN</label>
+                <!-- Champ Numéro de carte -->
+                <div class="relative">
+                    <label for="registrationClientForm_cin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numéro de carte</label>
+                    <div class="flex items-center">
+                        {{ form_widget(registrationClientForm.cin, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+                            'placeholder': 'Votre Numéro de carte',
+                            'inputmode': 'numeric',
+                            'pattern': '[0-9]{8}',  
+                            'id': 'registrationClientForm_cin'
+                        }}) }}
+                        {% if registrationClientForm.cin.vars.errors|length > 0 %}
+                            <span class="ml-2 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                    </div>
                     {{ form_errors(registrationClientForm.cin) }}
                 </div>
 
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.telephone, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Téléphone</label>
+                <!-- Champ Téléphone -->
+                <div class="relative">
+                    <label for="registrationClientForm_telephone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Téléphone</label>
+                    <div class="flex items-center">
+                        {{ form_widget(registrationClientForm.telephone, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+                            'placeholder': 'Votre Numéro de Téléphone',
+                            'inputmode': 'numeric',
+                            'pattern': '[0-9]{8}',
+                            'id': 'registrationClientForm_telephone'
+                        }}) }}
+                        {% if registrationClientForm.telephone.vars.errors|length > 0 %}
+                            <span class="ml-2 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                    </div>
                     {{ form_errors(registrationClientForm.telephone) }}
                 </div>
 
-                <!-- Password fields -->
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.plainPassword.first, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Mot de passe</label>
+                <!-- Mot de passe avec bouton pour afficher/masquer -->
+                <div class="relative">
+                    <label for="registrationClientForm_plainPassword_first" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mot de passe</label>
+                    <div class="relative">
+                        {{ form_widget(registrationClientForm.plainPassword.first, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10',
+                            'placeholder': '••••••••',
+                            'id': 'registrationClientForm_plainPassword_first'
+                        }}) }}
+                        <!-- Bouton œil pour voir/cacher le mot de passe -->
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </span>
+                    </div>
                     {{ form_errors(registrationClientForm.plainPassword.first) }}
                 </div>
 
-                <div class="relative h-11 w-full min-w-[200px] mb-4">
-                    {{ form_widget(registrationClientForm.plainPassword.second, {'attr': {
-                        'class': 'w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer',
-                        'placeholder': ' '
-                    }}) }}
-                    <label class="absolute left-0 -top-1.5">Vérification du mot de passe</label>
+                <!-- Confirmer le mot de passe avec bouton pour afficher/masquer -->
+                <div class="relative">
+                    <label for="registrationClientForm_plainPassword_second" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmez votre mot de passe</label>
+                    <div class="relative">
+                        {{ form_widget(registrationClientForm.plainPassword.second, {'attr': {
+                            'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10',
+                            'placeholder': '••••••••',
+                            'id': 'registrationClientForm_plainPassword_second'
+                        }}) }}
+                        <!-- Bouton œil pour voir/cacher le mot de passe -->
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="toggleConfirmPasswordVisibility()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </span>
+                    </div>
                     {{ form_errors(registrationClientForm.plainPassword.second) }}
                 </div>
 
-                <div class="-ml-2.5">
-                    <div class="inline-flex items-center">
-                        {{ form_widget(registrationClientForm.agreeTerms, {'attr': {'class': 'mr-2'}}) }}
-                        <span class="font-light text-gray-700 cursor-pointer">J'accepte les termes et conditions</span>
-                    </div>
+                <div class="flex items-start">
+                    {{ form_widget(registrationClientForm.agreeTerms, {'attr': {'class': 'mr-2'}}) }}
+                    <span class="font-medium text-gray-500 dark:text-white">J'accepte les termes et conditions</span>
                     {{ form_errors(registrationClientForm.agreeTerms) }}
                 </div>
-            </div>
 
-            <div class="p-6 pt-0">
-                <button
-                    class="block w-full bg-gradient-to-tr from-gray-900 to-gray-800 py-3 text-white rounded-lg">
-                    S'enregistrer
-                </button>
-                {{ form_end(registrationClientForm) }}
-            </div>
+                <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Créer un compte</button>
 
-            <p class="text-center mt-6">
-                Vous avez déjà un compte ?
-                <a href="{{ path('app_login') }}" class="font-bold text-blue-500">Connexion</a>
-            </p>
+                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                    Déjà inscrit? <a href="{{ path('app_login') }}" class="text-blue-600 dark:text-blue-400 hover:underline">Se connecter</a>
+                </div>
+            </form>
+            <!-- End Form -->
+        </div>
+        
+        <div class="flex flex-col justify-center">
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">Nous investissons dans le potentiel du monde</h1>
+            <p class="mb-6 text-lg font-normal text-gray-200 lg:text-xl dark:text-gray-200">Chez VotreMarque, nous nous concentrons sur les marchés où la technologie, l'innovation et le capital peuvent débloquer de la valeur à long terme et stimuler la croissance économique.</p>
+            <a href="#" class="text-blue-400 hover:underline font-medium text-lg inline-flex items-center">En savoir plus sur notre mission
+                <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </a>
         </div>
     </div>
-</div>
+</section>
 
-{% block javascripts %}
+<!-- Script pour basculer la visibilité des mots de passe -->
 <script>
-    const passwordInput = document.getElementById('{{ registrationClientForm.plainPassword.first.vars.id }}');
-    const confirmPasswordInput = document.getElementById('{{ registrationClientForm.plainPassword.second.vars.id }}');
-    const registerButton = document.getElementById('registerButton');
-
-    registerButton.addEventListener('click', function (event) {
-        const password = passwordInput.value;
-        const confirmPassword = confirmPasswordInput.value;
-
-        if (password !== confirmPassword) {
-            event.preventDefault();
-            alert('Les mots de passe ne correspondent pas');
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('registrationClientForm_plainPassword_first');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
         }
-    });
+    }
+
+    function toggleConfirmPasswordVisibility() {
+        const confirmPasswordField = document.getElementById('registrationClientForm_plainPassword_second');
+        if (confirmPasswordField.type === 'password') {
+            confirmPasswordField.type = 'text';
+        } else {
+            confirmPasswordField.type = 'password';
+        }
+    }
 </script>
-{% endblock %}
+
 {% endblock %}

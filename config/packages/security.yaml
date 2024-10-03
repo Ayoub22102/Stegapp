@@ -35,7 +35,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_default
 
     # Access control configuration (Move this out of firewalls)
     access_control:

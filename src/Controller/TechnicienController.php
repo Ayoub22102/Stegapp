@@ -31,10 +31,15 @@ class TechnicienController extends AbstractController
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
-        // Récupère toutes les interventions non terminées assignées à ce technicien
-        $reclamations = $user->getReclamations()->filter(function ($reclamation) {
-            return !$reclamation instanceof Intervention || $reclamation->getEtat() !== 'terminée';
-        });
+        // Récupère toutes les interventions non terminées (état = 'en cours') assignées à ce technicien
+        $reclamations = $this->entityManager->getRepository(Intervention::class)->createQueryBuilder('i')
+            ->join('i.affectation_technicien', 't')
+            ->where('t.id = :technicienId')
+            ->andWhere('i.etat = :etat')
+            ->setParameter('technicienId', $user->getId())
+            ->setParameter('etat', 'en cours')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('technicien/planning.html.twig', [
             'reclamations' => $reclamations,

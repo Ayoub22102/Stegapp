@@ -1,46 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réclamations en Attente{% endblock %}
+{% block title %}Demandes en Attente{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto my-8 p-4 bg-white shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold mb-6">Réclamations en Attente</h1>
-
+<section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+    <!-- Section pour afficher les demandes en attente -->
+    <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Réclamations en Attente</h1>
+        
         {% if reclamations is empty %}
-            <p class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
+            <!-- Message quand il n'y a aucune réclamation -->
+            <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
                 Aucune réclamation en attente trouvée.
             </p>
         {% else %}
+            <!-- Tableau des réclamations en attente -->
             <div class="overflow-x-auto">
-                <table class="min-w-full table-auto bg-white">
+                <table class="min-w-full table-auto bg-sky-100 dark:bg-gray-800 rounded-lg shadow-lg">
                     <thead>
-                        <tr class="bg-gray-200 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <tr class="bg-gray-300 dark:bg-gray-700 text-left text-gray-700 dark:text-white uppercase text-sm leading-normal">
+                            <th class="py-3 px-6">Type de Réclamation</th>
+                            <th class="py-3 px-6">Numéro de compteur</th>
                             <th class="py-3 px-6">Description</th>
                             <th class="py-3 px-6">Date de Soumission</th>
-                            <th class="py-3 px-6">Email du Client</th>
+                            <th class="py-3 px-6">Nom Complet du Client</th>
+                            <th class="py-3 px-6">Téléphone du Client</th>
                             <th class="py-3 px-6">Adresse</th>
-                            <th class="py-3 px-6">Statut</th>
                             <th class="py-3 px-6">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-600 text-sm font-light">
+                    <tbody class="text-gray-600 dark:text-white text-sm font-light">
                         {% for reclamation in reclamations %}
-                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                <td class="py-3 px-6">{{ reclamation.type }}</td>
+                                <td class="py-3 px-6">{{ reclamation.numeroCompteur }}</td>
                                 <td class="py-3 px-6">{{ reclamation.description }}</td>
-                                <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('Y-m-d') : '' }}</td>
-                                <td class="py-3 px-6">{{ reclamation.clientmail }}</td>
+                                <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</td>
+                                <td class="py-3 px-6">{{ reclamation.nomClient }} {{ reclamation.prenomClient }}</td>
+                                <td class="py-3 px-6">{{ reclamation.telephoneClient }}</td>
                                 <td class="py-3 px-6">{{ reclamation.adresse }}</td>
-                                <td class="py-3 px-6">{{ reclamation.etatValidation }}</td>
                                 <td class="py-3 px-6">
-                                    <!-- Formulaire d'Acceptation -->
-                                    <form method="get" action="{{ path('attenteapp_attente_accept_confirm', {id: reclamation.id}) }}" class="inline-block">
-                                        <button type="submit" class="bg-green-500 text-white px-4 py-1 rounded shadow hover:bg-green-600 text-sm">Accepter</button>
-                                    </form>
-                                    
-                                    <!-- Formulaire de Rejet -->
-                                    <form method="get" action="{{ path('attenteapp_attente_reject_confirm', {id: reclamation.id}) }}" class="inline-block ml-2">
-                                        <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded shadow hover:bg-red-600 text-sm">Rejeter</button>
-                                    </form>
+                                    <!-- Conteneur pour les boutons avec Flexbox -->
+                                    <div class="flex space-x-2">
+                                        <!-- bouton d'Acceptation avec Popup -->
+                                        <button onclick="showAcceptConfirmationPopup('{{ reclamation.id }}', '{{ csrf_token('accept' ~ reclamation.id) }}')" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900 text-sm">
+                                            Accepter
+                                        </button>
+                                        <!-- bouton de Rejet avec Popup -->
+                                        <button onclick="showRejectConfirmationPopup('{{ reclamation.id }}', '{{ csrf_token('reject' ~ reclamation.id) }}')" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 text-sm">
+                                            Rejeter
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -49,4 +59,115 @@
             </div>
         {% endif %}
     </div>
+</section>
+
+<!-- Confirmation Popup Modal pour Accepter -->
+<div id="acceptConfirmationPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-lg">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Confirmer l'Acceptation</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">Êtes-vous sûr de vouloir accepter cette réclamation ?</p>
+        <ul class="list-disc list-inside text-gray-900 dark:text-white mb-6" id="reclamationDetails"></ul>
+        <div class="flex justify-between">
+            <button type="button" onclick="closeAcceptConfirmationPopup()" class="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700">
+                Annuler
+            </button>
+            <form id="acceptForm" method="post">
+                <input type="hidden" name="_token" value="">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    Accepter
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Popup Modal pour Rejeter -->
+<div id="rejectConfirmationPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full shadow-lg">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Confirmer le Rejet</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">Êtes-vous sûr de vouloir rejeter cette réclamation ?</p>
+        <ul class="list-disc list-inside text-gray-900 dark:text-white mb-6" id="reclamationRejectDetails"></ul>
+        <div class="flex justify-between">
+            <button type="button" onclick="closeRejectConfirmationPopup()" class="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700">
+                Annuler
+            </button>
+            <form id="rejectForm" method="post">
+                <input type="hidden" name="_token" value="">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                    Rejeter
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAcceptConfirmationPopup(reclamationId, csrfToken) {
+        // Show the confirmation popup for accept
+        const popup = document.getElementById('acceptConfirmationPopup');
+        popup.classList.remove('hidden');
+
+        // Set the form action to the correct reclamation acceptance URL
+        const acceptForm = document.getElementById('acceptForm');
+        acceptForm.action = "{{ path('attenteapp_attente_accept', {'id': 'RECLAMATION_ID'}) }}".replace('RECLAMATION_ID', reclamationId);
+
+        // Set the CSRF token dynamically
+        acceptForm.querySelector('[name="_token"]').value = csrfToken;
+
+        // Set reclamation details dynamically in the popup
+        const reclamation = document.querySelector(`button[onclick="showAcceptConfirmationPopup('${reclamationId}', '${csrfToken}')"]`).closest('tr');
+        const reclamationDetails = document.getElementById('reclamationDetails');
+        reclamationDetails.innerHTML = `
+            <li><strong>Type :</strong> ${reclamation.querySelector('td:nth-child(1)').innerText}</li>
+            <li><strong>Description :</strong> ${reclamation.querySelector('td:nth-child(3)').innerText}</li>
+            <li><strong>Date de Soumission :</strong> ${reclamation.querySelector('td:nth-child(4)').innerText}</li>
+            <li><strong>Nom Complet du Client :</strong> ${reclamation.querySelector('td:nth-child(5)').innerText}</li>
+            <li><strong>Téléphone du Client :</strong> ${reclamation.querySelector('td:nth-child(6)').innerText}</li>
+            <li><strong>Adresse :</strong> ${reclamation.querySelector('td:nth-child(7)').innerText}</li>
+        `;
+    }
+
+    function closeAcceptConfirmationPopup() {
+        // Hide the confirmation popup for accept
+        const popup = document.getElementById('acceptConfirmationPopup');
+        popup.classList.add('hidden');
+    }
+
+    function showRejectConfirmationPopup(reclamationId, csrfToken) {
+        // Show the confirmation popup for reject
+        const popup = document.getElementById('rejectConfirmationPopup');
+        popup.classList.remove('hidden');
+
+        // Set the form action to the correct reclamation rejection URL
+        const rejectForm = document.getElementById('rejectForm');
+        rejectForm.action = "{{ path('attenteapp_attente_reject', {'id': 'RECLAMATION_ID'}) }}".replace('RECLAMATION_ID', reclamationId);
+
+        // Set the CSRF token dynamically
+        rejectForm.querySelector('[name="_token"]').value = csrfToken;
+
+        // Set reclamation details dynamically in the popup
+        const reclamation = document.querySelector(`button[onclick="showRejectConfirmationPopup('${reclamationId}', '${csrfToken}')"]`).closest('tr');
+        const reclamationDetails = document.getElementById('reclamationRejectDetails');
+        reclamationDetails.innerHTML = `
+            <li><strong>Type :</strong> ${reclamation.querySelector('td:nth-child(1)').innerText}</li>
+            <li><strong>Description :</strong> ${reclamation.querySelector('td:nth-child(3)').innerText}</li>
+            <li><strong>Date de Soumission :</strong> ${reclamation.querySelector('td:nth-child(4)').innerText}</li>
+            <li><strong>Nom Complet du Client :</strong> ${reclamation.querySelector('td:nth-child(5)').innerText}</li>
+            <li><strong>Téléphone du Client :</strong> ${reclamation.querySelector('td:nth-child(6)').innerText}</li>
+            <li><strong>Adresse :</strong> ${reclamation.querySelector('td:nth-child(7)').innerText}</li>
+        `;
+    }
+
+    function closeRejectConfirmationPopup() {
+        // Hide the confirmation popup for reject
+        const popup = document.getElementById('rejectConfirmationPopup');
+        popup.classList.add('hidden');
+    }
+</script>
+
+<style>
+    .__col {
+        writing-mode: vertical-lr;
+    }
+</style>
 {% endblock %}

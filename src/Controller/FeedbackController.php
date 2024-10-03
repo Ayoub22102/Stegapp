@@ -37,12 +37,12 @@ class FeedbackController extends AbstractController
             throw $this->createAccessDeniedException('Veuillez vous connecter pour accéder à cette page.');
         }
 
-        // Use the custom repository method to get reclamations with "Clôturé" interventions for the client
+        // Get reclamations with "Clôturé" interventions for the client
         $reclamationsWithCloturedInterventions = $reclamationRepository->findByClientAndCloturedInterventions($client->getUsername());
 
         // Filter out reclamations that already have feedback
         $reclamationsWithoutFeedback = array_filter($reclamationsWithCloturedInterventions, function ($intervention) use ($feedbackRepository) {
-            return !$feedbackRepository->findOneBy(['reclamation' => $intervention]); // Modified to check reclamation
+            return !$feedbackRepository->findOneBy(['reclamation' => $intervention]); 
         });
 
         return $this->render('feedback/list.html.twig', [
@@ -54,9 +54,9 @@ class FeedbackController extends AbstractController
      * Submit feedback for a specific intervention (which is also a reclamation).
      */
     #[Route('/submit/{id}', name: 'submit', methods: ['GET', 'POST'])]
-    public function submitFeedback($id, Request $request, FeedbackRepository $feedbackRepository, ReclamationRepository $reclamationRepository): Response
+    public function submitFeedback($id, Request $request, FeedbackRepository $feedbackRepository): Response
     {
-        // Find the reclamation (which could be an intervention) by ID
+        // Find the reclamation by ID
         $reclamation = $this->entityManager->getRepository(Reclamation::class)->find($id);
         if (!$reclamation) {
             throw $this->createNotFoundException('Réclamation introuvable.');
@@ -80,7 +80,7 @@ class FeedbackController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set the linked reclamation to the feedback (which could be an intervention)
+            // Set the linked reclamation to the feedback
             $feedback->setReclamation($reclamation);
             $this->entityManager->persist($feedback);
             $this->entityManager->flush();
@@ -92,6 +92,40 @@ class FeedbackController extends AbstractController
         return $this->render('feedback/submit.html.twig', [
             'form' => $form->createView(),
             'reclamation' => $reclamation,
+        ]);
+    }
+
+    /**
+     * Displays all feedback for the Chef d'équipe.
+     */
+    #[Route('/all', name: 'all', methods: ['GET'])]
+    public function listAllFeedback(FeedbackRepository $feedbackRepository): Response
+    {
+        // Ensure the current user has the "ROLE_CHEF_EQUIPE"
+        if (!$this->isGranted('ROLE_CHEF_EQUIPE')) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        // Fetch all feedback from the repository
+        $feedbacks = $feedbackRepository->findAll();
+
+        return $this->render('feedback/all.html.twig', [
+            'feedbacks' => $feedbacks,
+        ]);
+    }
+
+    #[Route('/details/{id}', name: 'feedback_details', methods: ['GET'])]
+    public function feedbackDetails($id, FeedbackRepository $feedbackRepository): Response
+    {
+        // Retrieve the feedback by its ID
+        $feedback = $feedbackRepository->find($id);
+
+        if (!$feedback) {
+            throw $this->createNotFoundException('Feedback introuvable.');
+        }
+
+        return $this->render('feedback/details.html.twig', [
+            'feedback' => $feedback,
         ]);
     }
 }

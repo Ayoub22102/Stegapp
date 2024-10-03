@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Intervention;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,8 +32,8 @@ class ClotureController extends AbstractController
         ]);
     }
 
-    #[Route('/cloturer/{id}', name: 'cloturer', methods: ['GET', 'POST'])]
-    public function cloturerIntervention($id, Request $request): Response
+    #[Route('/cloturer/{id}', name: 'cloturer', methods: ['POST'])]
+    public function cloturerIntervention($id): Response
     {
         // Fetch the intervention by its ID
         $intervention = $this->entityManager->getRepository(Intervention::class)->find($id);
@@ -43,25 +42,15 @@ class ClotureController extends AbstractController
             throw $this->createNotFoundException('Intervention introuvable.');
         }
 
-        if ($request->isMethod('POST')) {
-            $confirm = $request->request->get('confirm');
+        // Update the intervention state to "Clôturé"
+        $intervention->setEtat('Clôturé');
 
-            if ($confirm !== 'yes') {
-                // Display confirmation message
-                return $this->render('cloture/confirm_cloture.html.twig', [
-                    'intervention' => $intervention,
-                ]);
-            }
+        // Update the corresponding reclamation's etat_validation to "Clôturée"
+        $intervention->setEtatValidation('Clôturée');
 
-            // Update the intervention state to "Clôturé"
-            $intervention->setEtat('Clôturé');
-            $this->entityManager->flush();
+        $this->entityManager->flush();
 
-            return $this->redirectToRoute('cloture_interventions');
-        }
-
-        return $this->render('cloture/cloturer_intervention.html.twig', [
-            'intervention' => $intervention,
-        ]);
+        // Redirect back to the list of interventions
+        return $this->redirectToRoute('cloture_interventions');
     }
 }

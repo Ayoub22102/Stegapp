@@ -3,22 +3,37 @@
 {% block title %}Rejeter la Réclamation{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold mb-6">Confirmer le Rejet</h1>
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour confirmer le rejet d'une réclamation -->
+        <div class="container mx-auto p-8 w-full lg:max-w-3xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Confirmer le Rejet</h1>
 
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded">
-            <p class="mb-3">Êtes-vous sûr de vouloir rejeter la réclamation suivante ?</p>
-            <ul class="list-disc list-inside">
-                <li><strong>Description :</strong> {{ reclamation.description }}</li>
-                <li><strong>Date de Soumission :</strong> {{ reclamation.dateSoumission ? reclamation.dateSoumission|date('Y-m-d') : '' }}</li>
-                <li><strong>Email du Client :</strong> {{ reclamation.clientmail }}</li>
-                <li><strong>Adresse :</strong> {{ reclamation.adresse }}</li>
-            </ul>
+            <!-- Détails de la réclamation à rejeter -->
+            <div class="bg-sky-100 dark:bg-slate-800 border-l-4 border-sky-200 text-white dark:text-white p-6 mb-8 rounded-lg shadow-lg">
+                <p class="mb-4 text-gray-900 dark:text-white">Êtes-vous sûr de vouloir rejeter la réclamation suivante ?</p>
+                <ul class="list-disc list-inside text-gray-900 dark:text-white">
+                    <li><strong>Type :</strong> {{ reclamation.type }}</li>
+                    <li><strong>Description :</strong> {{ reclamation.description }}</li>
+                    <li><strong>Date de Soumission :</strong> {{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</li>
+                    <li><strong>Nom du Client :</strong> {{ reclamation.nomClient }}</li>
+                    <li><strong>Prénom du Client :</strong> {{ reclamation.prenomClient }}</li>
+                    <li><strong>Téléphone du Client :</strong> {{ reclamation.telephoneClient }}</li>
+                    <li><strong>Adresse :</strong> {{ reclamation.adresse }}</li>
+                    <li><strong>Ville :</strong> {{ reclamation.ville }}</li>
+                </ul>
+            </div>
+
+            <!-- Boutons d'action : Rejeter ou Annuler -->
+            <div class="text-center">
+                <form method="post" action="{{ path('attenteapp_attente_reject', {id: reclamation.id}) }}" class="inline-block">
+                    <button type="submit" class="w-full lg:w-auto px-6 py-3 text-base font-medium text-center text-white bg-red-500 rounded-lg shadow-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                        Rejeter
+                    </button>
+                </form>
+                <a href="{{ path('attenteapp_attente_index') }}" class="w-full lg:w-auto px-6 py-3 mt-4 lg:mt-0 text-base font-medium text-center text-white bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-900 ml-4">
+                    Annuler
+                </a>
+            </div>
         </div>
-
-        <form method="post" action="{{ path('attenteapp_attente_reject', {id: reclamation.id}) }}">
-            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow">Rejeter</button>
-            <a href="{{ path('attenteapp_attente_index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow ml-2">Annuler</a>
-        </form>
-    </div>
+    </section>
 {% endblock %}

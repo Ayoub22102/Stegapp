@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les Feedbacks{% endblock %}
+
+{% block body %}
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour afficher tous les feedbacks -->
+        <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Tous les Feedbacks</h1>
+            
+            {% if feedbacks is empty %}
+                <!-- Message quand il n'y a aucun feedback -->
+                <p class="bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-300 p-4 rounded mt-4">
+                    Aucun feedback trouvé.
+                </p>
+            {% else %}
+                <!-- Affichage des feedbacks sous forme de cartes -->
+                <div class="flex flex-wrap -mx-4">
+                    {% for feedback in feedbacks %}
+                        <div class="w-full md:w-1/2 lg:w-1/3 px-4 mb-6">
+                            <div class="bg-white shadow-lg rounded-lg overflow-hidden my-6 flex flex-col justify-between h-full">
+                                <div class="p-6">
+                                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Feedback de {{ feedback.reclamation.nomClient }} {{ feedback.reclamation.prenomClient }}</h2>
+                                    <div class="flex items-center mb-4">
+                                        <strong class="mr-2">Évaluation:</strong>
+                                        <div class="flex gap-0.5">
+                                            {% for i in 1..5 %}
+                                                {% if i <= feedback.evaluation %}
+                                                    <svg class="h-8 w-8 shrink-0 fill-amber-400" viewBox="0 0 256 256">
+                                                        <path d="M239.2 97.4A16.4 16.4 0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4 0 00128 16h0a16.4 16.4 0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5 0 0016.8 97.4 16.8 16.8 0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5 0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1 0 008.7 2.6 16.5 16.5 0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8 0 00239.2 97.4z"></path>
+                                                    </svg>
+                                                {% else %}
+                                                    <svg class="h-8 w-8 shrink-0 fill-gray-300" viewBox="0 0 256 256">
+                                                        <path d="M239.2 97.4A16.4 16.4 0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4 0 00128 16h0a16.4 16.4 0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5 0 0016.8 97.4 16.8 16.8 0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5 0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1 0 008.7 2.6 16.5 16.5 0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8 0 00239.2 97.4z"></path>
+                                                    </svg>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600"><strong>Commentaire:</strong> {{ feedback.commentaire }}</p>
+                                    {% if feedback.reclamation.affectationTechnicien|length > 0 %}
+                                        {% set technicien = feedback.reclamation.affectationTechnicien|first %}
+                                        <p class="text-gray-600 mt-4"><strong>Technicien Affecté :</strong> {{ technicien.nom }} {{ technicien.prenom }}</p>
+                                    {% else %}
+                                        <p class="text-gray-600 mt-4"><strong>Technicien Affecté :</strong> Aucun technicien assigné</p>
+                                    {% endif %}
+                                </div>
+                                <div class="bg-gray-100 px-5 py-2 flex items-center justify-center">
+                                    <a href="{{ path('feedback_feedback_details', {id: feedback.id}) }}" class="text-blue-600 font-medium hover:text-blue-800">Voir plus</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

@@ -2,41 +2,11 @@
 
 {% block title %}Liste des Techniciens{% endblock %}
 
-{% block stylesheets %}
-<style>
-    body {
-        background-color: #f0f4f8; /* Light blue-gray background */
-    }
-    .search-bar {
-        width: 100%;
-        padding: 10px;
-        background-color: #f0f4f8; /* Match the background of the page */
-        border-bottom: 1px solid #e2e8f0; /* Light border to separate search from table */
-    }
-    .search-input {
-        width: 80%; /* Adjust width to align with table */
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #d1d5db; /* Light border color */
-    }
-    .search-button {
-        padding: 8px 16px;
-        background-color: #4299e1; /* Blue background */
-        color: white;
-        border-radius: 4px;
-        border: none;
-        margin-left: 10px;
-        cursor: pointer;
-    }
-    .search-button:hover {
-        background-color: #3182ce; /* Darker blue on hover */
-    }
-</style>
-{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto mt-10">
-        <h1 class="text-center text-2xl font-bold mb-6">Liste des Techniciens</h1>
+<section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+    <!-- Section pour afficher la liste des techniciens -->
+    <div class="container mx-auto p-8 w-full lg:max-w-7xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Liste des Techniciens</h1>
 
         <!-- Display Flash Messages -->
         {% for label, messages in app.flashes %}
@@ -49,36 +19,38 @@
             </div>
         {% endfor %}
 
-        <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="search-bar flex items-center justify-between">
-                {{ form_start(search_form, { 'method': 'GET', 'attr': {'class': 'flex w-full'}}) }}
-                    {{ form_widget(search_form.search, {'attr': {'class': 'search-input', 'placeholder': 'Rechercher...'}}) }}
-                    <button class="search-button">Rechercher</button>
-                {{ form_end(search_form) }}
-            </div>
+        <!-- Barre de recherche -->
+        <div class="search-bar flex items-center justify-between mb-6">
+            {{ form_start(search_form, { 'method': 'GET', 'attr': {'class': 'flex w-full'}}) }}
+                {{ form_widget(search_form.search, {'attr': {'class': 'bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3', 'placeholder': 'Rechercher...'}}) }}
+                <button class="ml-4 px-6 py-3 text-lg font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Rechercher</button>
+            {{ form_end(search_form) }}
+        </div>
 
-            <table class="min-w-full leading-normal mt-0">
+        <!-- Tableau des techniciens -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto bg-sky-100 dark:bg-gray-800 rounded-lg shadow-lg">
                 <thead>
-                    <tr>
-                        <th class="px-5 py-3 bg-gray-200 text-left text-xs font-semibold text-gray-600 uppercase">Nom</th>
-                        <th class="px-5 py-3 bg-gray-200 text-left text-xs font-semibold text-gray-600 uppercase">Prénom</th>
-                        <th class="px-5 py-3 bg-gray-200 text-left text-xs font-semibold text-gray-600 uppercase">CIN</th>
-                        <th class="px-5 py-3 bg-gray-200 text-left text-xs font-semibold text-gray-600 uppercase">Téléphone</th>
-                        <th class="px-5 py-3 bg-gray-200 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                    <tr class="bg-gray-300 dark:bg-gray-700 text-left text-gray-700 dark:text-white uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Nom</th>
+                        <th class="py-3 px-6">Prénom</th>
+                        <th class="py-3 px-6">CIN</th>
+                        <th class="py-3 px-6">Téléphone</th>
+                        <th class="py-3 px-6">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-gray-600 dark:text-white text-sm font-light">
                     {% for technicien in techniciens %}
-                        <tr>
-                            <td class="px-5 py-3">{{ technicien.nom }}</td>
-                            <td class="px-5 py-3">{{ technicien.prenom }}</td>
-                            <td class="px-5 py-3">{{ technicien.cin }}</td>
-                            <td class="px-5 py-3">{{ technicien.telephone }}</td>
-                            <td class="px-5 py-3 flex items-center space-x-2">
-                                <a href="{{ path('admin_technicien_edit', {'id': technicien.id}) }}" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-700">Modifier</a>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6">{{ technicien.nom }}</td>
+                            <td class="py-3 px-6">{{ technicien.prenom }}</td>
+                            <td class="py-3 px-6">{{ technicien.cin }}</td>
+                            <td class="py-3 px-6">{{ technicien.telephone }}</td>
+                            <td class="py-3 px-6 flex items-center space-x-2">
+                                <a href="{{ path('admin_technicien_edit', {'id': technicien.id}) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900 text-sm">Modifier</a>
                                 <form action="{{ path('admin_technicien_delete', {'id': technicien.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce technicien ?');">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ technicien.id) }}">
-                                    <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700">Supprimer</button>
+                                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 text-sm">Supprimer</button>
                                 </form>
                             </td>
                         </tr>
@@ -91,6 +63,10 @@
             </table>
         </div>
 
-        <a href="{{ path('admin_technicien_new') }}" class="block mt-4 text-center text-blue-500 hover:text-blue-700">Ajouter un Technicien</a>
+        <!-- Lien pour ajouter un technicien -->
+        <div class="text-center mt-8">
+            <a href="{{ path('admin_technicien_new') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-700 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Ajouter un Technicien</a>
+        </div>
     </div>
+</section>
 {% endblock %}

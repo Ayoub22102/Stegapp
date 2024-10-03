@@ -3,12 +3,109 @@
 {% block title %}Donner votre Feedback{% endblock %}
 
 {% block body %}
-<h1>Donner votre Feedback pour la réclamation {{ reclamation.id }}</h1>
+<style>
+    /* Hide the radio buttons under the stars */
+    input[type="hidden"] {
+        display: none;
+    }
+</style>
 
-{{ form_start(form) }}
-    {{ form_row(form.evaluation, {'attr': {'class': 'star-rating'}}) }}
-    {{ form_row(form.Commentaire) }}
-    <button class="btn">Soumettre le Feedback</button>
-{{ form_end(form) }}
+<section class="bg-sky-900 min-h-screen flex justify-center items-center py-10">
+    <!-- Container for Feedback Form -->
+    <div class="container mx-auto p-8 w-4/5 lg:w-3/5 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Donner votre Feedback pour la Réclamation</h1>
 
+        <!-- Feedback Form -->
+        {{ form_start(form) }}
+        
+        <!-- Star Rating Section -->
+        <div class="mb-6">
+            <label for="evaluation" class="block text-lg font-medium text-gray-900 dark:text-white mb-2">Évaluation</label>
+            <div id="star-rating" class="flex gap-0.5">
+                {% for i in 1..5 %}
+                    <svg data-value="{{ i }}" class="star h-8 w-8 shrink-0 fill-gray-300 cursor-pointer" viewBox="0 0 256 256">
+                        <path d="M239.2 97.4A16.4 16.4 0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4 0 00128 16h0a16.4 16.4 0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
+                    </svg>
+                {% endfor %}
+            </div>
+            <!-- Hidden Evaluation Input -->
+            {{ form_widget(form['evaluation'], {'id': 'evaluation-input'}) }}
+        </div>
+
+        <!-- Commentaire Field -->
+        <div class="mb-6">
+            {{ form_row(form['commentaire'], {'attr': {'class': 'bg-sky-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-black dark:text-white text-lg rounded-lg p-4 focus:ring-blue-500 focus:border-blue-500 w-full'}}) }}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="inline-block w-full lg:w-auto px-6 py-3 text-base font-medium text-center text-white bg-green-500 rounded-lg shadow-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
+                Soumettre le Feedback
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('#star-rating .star');
+        const ratingInput = document.getElementById('evaluation-input');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                const value = this.getAttribute('data-value');
+                ratingInput.value = value;  // Set the value of the hidden input to the clicked star value
+
+                // Update the stars appearance based on selected rating
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.remove('fill-gray-300');
+                        s.classList.add('fill-amber-400');
+                    } else {
+                        s.classList.remove('fill-amber-400');
+                        s.classList.add('fill-gray-300');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseover', function () {
+                const value = this.getAttribute('data-value');
+
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.add('fill-amber-400');
+                        s.classList.remove('fill-gray-300');
+                    } else {
+                        s.classList.add('fill-gray-300');
+                        s.classList.remove('fill-amber-400');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseout', function () {
+                const currentValue = ratingInput.value;
+
+                stars.forEach((s, index) => {
+                    if (index < currentValue) {
+                        s.classList.add('fill-amber-400');
+                        s.classList.remove('fill-gray-300');
+                    } else {
+                        s.classList.add('fill-gray-300');
+                        s.classList.remove('fill-amber-400');
+                    }
+                });
+            });
+        });
+
+        // Form validation to ensure a rating is selected
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (!ratingInput.value) {
+                event.preventDefault();
+                alert('Veuillez sélectionner une évaluation (1-5 étoiles).');
+            }
+        });
+    });
+</script>
 {% endblock %}

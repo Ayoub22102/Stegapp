@@ -1,64 +1,66 @@
-{# templates/reclamation/index.html.twig #}
-
 {% extends 'base.html.twig' %}
-
-{% block title %}Mes Réclamations{% endblock %}
+{% block title %}Réclamation #{{ reclamation.id }}{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
-        <h1 class="text-2xl font-bold mb-6">Mes Réclamations</h1>
-
-        {% if reclamations is empty %}
-            <p class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
-                Vous n'avez soumis aucune réclamation pour le moment.
-            </p>
-        {% else %}
+    <section class="bg-sky-900 min-h-screen flex justify-center items-center py-10">
+        <div class="container mx-auto p-8 w-4/5 lg:w-3/5 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Détails de la Réclamation</h1>
+            
+            <!-- Table for displaying details -->
             <div class="overflow-x-auto">
-                <table class="min-w-full table-auto bg-white">
-                    <thead>
-                        <tr class="bg-gray-200 text-left text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-6">Type</th>
-                            <th class="py-3 px-6">Description</th>
-                            <th class="py-3 px-6">Date de soumission</th>
-                            <th class="py-3 px-6">État de validation</th>
-                            <th class="py-3 px-6">Adresse</th>
-                            <th class="py-3 px-6">Actions</th>
+                <table class="min-w-full table-auto bg-sky-100 dark:bg-gray-800 rounded-lg shadow-lg">
+                    <tbody class="text-gray-600 dark:text-white text-sm font-light">
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Type de Réclamation</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.type }}</td>
                         </tr>
-                    </thead>
-                    <tbody class="text-gray-600 text-sm font-light">
-                        {% for reclamation in reclamations %}
-                            <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                <td class="py-3 px-6">{{ reclamation.type }}</td>
-                                <td class="py-3 px-6">{{ reclamation.description }}</td>
-                                <td class="py-3 px-6">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</td>
-                                <td class="py-3 px-6">{{ reclamation.etatValidation }}</td>
-                                <td class="py-3 px-6">{{ reclamation.adresse }}</td>
-                                <td class="py-3 px-6">
-                                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="bg-blue-500 text-white px-4 py-1 rounded shadow hover:bg-blue-600">Voir</a>
-                                    {% if reclamation.etatValidation == 'en attente' %}
-                                        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="bg-yellow-500 text-white px-4 py-1 rounded shadow hover:bg-yellow-600">Modifier</a>
-                                        <form method="post" action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" class="inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-                                            <button class="bg-red-500 text-white px-4 py-1 rounded shadow hover:bg-red-600" type="submit">Supprimer</button>
-                                        </form>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Numéro de Compteur</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.numeroCompteur }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Description</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.description }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Adresse</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.adresse }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Ville</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.ville }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">Date de Soumission</td>
+                            <td class="py-3 px-6 dark:text-white">{{ reclamation.dateSoumission ? reclamation.dateSoumission|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td class="py-3 px-6 font-bold dark:text-white">État de Validation</td>
+                            <td class="py-3 px-6">
+                                {% set status = reclamation.etatValidation|lower %}
+                                {% if status == 'acceptée' %}
+                                    <span class="bg-green-500 text-white py-1 px-2 rounded-full text-xs">Acceptée</span>
+                                {% elseif status == 'en attente' %}
+                                    <span class="bg-orange-500 text-white py-1 px-2 rounded-full text-xs">En attente</span>
+                                {% elseif status == 'refusée' %}
+                                    <span class="bg-red-500 text-white py-1 px-2 rounded-full text-xs">Refusée</span>
+                                {% elseif status == 'clôturée' %}
+                                    <span class="bg-gray-500 text-white py-1 px-2 rounded-full text-xs">Clôturée</span>
+                                {% else %}
+                                    <span class="bg-gray-500 text-white py-1 px-2 rounded-full text-xs">Inconnu</span>
+                                {% endif %}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            {# Pagination Links #}
-            <div class="mt-6">
-                {{ knp_pagination_render(reclamations) }}
+            <!-- Back Button -->
+            <div class="text-center mt-8">
+                <a href="{{ path('app_reclamation_index') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-700 dark:hover:bg-blue-600 dark:focus:ring-blue-900">
+                    Retour à la liste
+                </a>
             </div>
-        {% endif %}
-
-        <div class="mt-4 text-center">
-            <a href="{{ path('app_reclamation_new') }}" class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600">
-                Créer une nouvelle réclamation
-            </a>
         </div>
-    </div>
+    </section>
 {% endblock %}

@@ -1,113 +1,98 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Connexion{% endblock %}
-
-{% block stylesheets %}
-    <!-- Inclure Tailwind CSS via CDN (ou ajouter votre propre configuration Tailwind) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
-{% endblock %}
-
 {% block body %}
-<div class="flex justify-center items-center min-h-screen">
-    <div class="max-w-[720px] mx-auto">
-        <!-- Boîte de Connexion réduite de 25% -->
-        <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-72 rounded-xl bg-clip-border">
-            <!-- Boîte contenant le texte 'Connexion', réduite de 25% -->
-            <div class="relative grid mx-4 mb-4 -mt-6 overflow-hidden text-white shadow-lg h-20 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
-                <h3 class="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
-                    Connexion
-                </h3>
-            </div>
+<section class="bg-sky-900 min-h-screen flex justify-center items-center">
+    <div class="py-3 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
+        <div class="flex flex-col justify-center mb-10 lg:mb-0">
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">Nous investissons dans le potentiel du monde</h1>
+            <p class="mb-6 text-lg font-normal text-gray-200 lg:text-xl dark:text-gray-200">Chez VotreMarque, nous nous concentrons sur les marchés où la technologie, l'innovation et le capital peuvent débloquer de la valeur à long terme et stimuler la croissance économique.</p>
+            <a href="#" class="text-blue-400 hover:underline font-medium text-lg inline-flex items-center">En savoir plus sur notre application
+                <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </a>
+        </div>
+        <div>
+            <div class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Se connecter à Steg Reclamations</h2>
+                <form method="post" action="{{ path('app_login') }}" class="mt-8 space-y-6">
+                    <!-- Jeton CSRF pour la sécurité -->
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <!-- Formulaire de Connexion -->
-            <form method="post" action="{{ path('app_login') }}">
-                <!-- CSRF token for security -->
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                <div class="flex flex-col gap-4 p-6">
-                    <!-- Champ Email/Matricule -->
-                    <div class="relative h-11 w-full min-w-[200px]">
-                        <input
-                            class="w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer border-blue-gray-200 border-t-transparent text-blue-gray-700 outline outline-0 placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                            placeholder=" " id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus
-                        />
-                        <label
-                            class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                            Email/Matricule
-                        </label>
-                    </div>
-
-                    <!-- Champ Mot de Passe -->
-                    <div class="relative h-11 w-full min-w-[200px]">
-                        <input
-                            class="w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer border-blue-gray-200 border-t-transparent text-blue-gray-700 outline outline-0 placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                            type="password" name="_password" id="password" autocomplete="current-password" required
-                            placeholder=" "
-                        />
-                        <label
-                            class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                            Mot de passe
-                        </label>
-                        <!-- Bouton bascule pour afficher/masquer le mot de passe -->
-                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500" id="togglePassword">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12m6 0a6 6 0 1 1-12 0 6 6 0 0 1 12 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.274 1.074-.745 2.072-1.373 2.947C18.805 18.742 15.586 21 12 21c-3.585 0-6.805-2.257-8.17-5.053a10.437 10.437 0 0 1-1.372-2.947z"/>
-                            </svg>
-                        </span>
-                    </div>
-
-                    <!-- Case à cocher Se souvenir de moi -->
-                    <div class="-ml-2.5">
-                        <div class="inline-flex items-center">
-                            <label for="checkbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
-                                <input type="checkbox" name="_remember_me" id="_remember_me"
-                                    class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
-                                />
-                                <span
-                                    class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    <!-- Champ Email -->
+                    <div class="relative">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre email/Matricule</label>
+                        <div class="flex items-center">
+                            <input type="text" name="_username" id="email" class="bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Votre Email/Matricule" value="{{ last_username }}" required autofocus />
+                            {% if error and error.messageKey == 'Invalid credentials.' %}
+                                <span class="ml-2 text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                                     </svg>
                                 </span>
-                            </label>
-                            <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="checkbox">
-                                Se souvenir de moi
-                            </label>
+                            {% endif %}
                         </div>
+                        {% if error and error.messageKey == 'Invalid credentials.' %}
+                            <p class="text-red-500 mt-2 text-sm">Vos identifiants sont invalides.</p>
+                        {% endif %}
                     </div>
-                </div>
 
-                <!-- Bouton Connexion -->
-                <div class="p-6 pt-0">
-                    <button
-                        class="block w-full select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                        Se connecter
-                    </button>
-                </div>
-            </form>
+                    <!-- Champ Mot de passe -->
+                    <div class="relative">
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre mot de passe</label>
+                        
+                        <div class="relative">
+                            <input type="password" name="_password" id="password" placeholder="••••••••"
+                                   class="bg-sky-100 border border-black text-black dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" 
+                                   required />
+                            <!-- Bouton œil pour voir/cacher le mot de passe -->
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onclick="togglePasswordVisibility()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </span>
+                        </div>
+                        {% if error and error.messageKey == 'Invalid credentials.' %}
+                            <p class="text-red-500 mt-2 text-sm">Vos identifiants sont invalides.</p>
+                        {% endif %}
+                    </div>
 
-            <!-- Redirection vers la page d'inscription -->
-            <p class="flex justify-center mt-6 font-sans text-sm antialiased font-light leading-normal text-inherit">
-                Vous n'avez pas de compte?
-                <a href="{{ path('app_register_Client') }}" class="block ml-1 font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900">
-                    Inscription
-                </a>
-            </p>
+                    <!-- Option Se souvenir de moi -->
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="remember" name="_remember_me" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 focus:ring-3 focus:ring-blue-300" />
+                        </div>
+                        <div class="ms-3 text-sm">
+                            <label for="remember" class="font-medium text-gray-500 dark:text-white">Se souvenir de cet appareil</label>
+                        </div>
+                        <a href="#" class="ms-auto text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">Mot de passe oublié?</a>
+                    </div>
+
+                    <!-- Bouton de connexion -->
+                    <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-sky-900 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Connexion</button>
+
+                    <!-- Lien pour créer un compte -->
+                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                        Pas encore inscrit? <a href="{{ path('app_register_Client') }}" class="text-blue-600 dark:text-blue-400 hover:underline">Créer un compte</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-{% block javascripts %}
+<!-- Script pour basculer la visibilité du mot de passe -->
 <script>
-    // Bascule d'affichage du mot de passe
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('text-gray-900');
-    });
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('password');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    }
 </script>
-{% endblock %}
+
 {% endblock %}

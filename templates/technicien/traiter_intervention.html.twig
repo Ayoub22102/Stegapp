@@ -2,29 +2,48 @@
 
 {% extends 'base.html.twig' %}
 
+{% block title %}Traiter Intervention{% endblock %}
+
 {% block body %}
-    <h1>Traiter Intervention pour la Réclamation</h1>
+    <section class="bg-sky-900 min-h-screen flex flex-col items-center py-10">
+        <!-- Section pour traiter une intervention -->
+        <div class="container mx-auto p-8 w-full lg:max-w-4xl bg-sky-200 dark:bg-slate-950 rounded-lg shadow-xl">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">Traiter Intervention pour la Réclamation</h1>
 
-    <h2>Détails de la Réclamation</h2>
-    <ul>
-        <li>Type: {{ reclamation.type }}</li>
-        <li>Description: {{ reclamation.description }}</li>
-        <li>Adresse: {{ reclamation.adresse }}</li>
-    </ul>
+            <!-- Détails de la Réclamation -->
+            <div class="bg-sky-100 dark:bg-gray-700 border border-blue-500 text-white dark:text-blue-300 p-6 mb-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Détails de la Réclamation</h2>
+                <ul class="list-disc list-inside text-gray-900 dark:text-white">
+                    <li><strong>Type :</strong> {{ reclamation.type }}</li>
+                    <li><strong>Description :</strong> {{ reclamation.description }}</li>
+                    <li><strong>Adresse :</strong> {{ reclamation.adresse }}</li>
+                    <li><strong>Ville :</strong> {{ reclamation.ville }}</li>
 
-    <h2>Formulaire d'Intervention</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label for="analyse">Analyse</label>
-            <textarea id="analyse" name="analyse" class="form-control" required></textarea>
+                </ul>
+            </div>
+
+            <!-- Formulaire d'Intervention -->
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white text-center mb-4">Formulaire d'Intervention</h2>
+            <form method="POST" class="w-full">
+                <div class="mb-6">
+                    <label for="analyse" class="block text-lg font-medium text-gray-900 dark:text-white mb-2">Analyse</label>
+                    <textarea id="analyse" name="analyse" class="bg-sky-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-black dark:text-white text-lg rounded-lg p-4 focus:ring-blue-500 focus:border-blue-500 w-full" required></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label for="etat" class="block text-lg font-medium text-gray-900 dark:text-white mb-2">État de l'Intervention</label>
+                    <select id="etat" name="etat" class="bg-sky-100 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-black dark:text-white text-lg rounded-lg p-4 focus:ring-blue-500 focus:border-blue-500 w-full">
+                        <option value="en cours">En cours</option>
+                        <option value="terminée">Terminée</option>
+                    </select>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="inline-block w-full lg:w-auto px-6 py-3 text-base font-medium text-center text-white bg-green-500 rounded-lg shadow-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
+                        Soumettre l'Intervention
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="etat">État de l'Intervention</label>
-            <select id="etat" name="etat" class="form-control">
-                <option value="en cours">En cours</option>
-                <option value="terminée">Terminée</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success">Soumettre l'Intervention</button>
-    </form>
+    </section>
 {% endblock %}

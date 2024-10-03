@@ -1,90 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Dashboard Template{% endblock %}</title>
+{% extends 'base.html.twig' %}
 
-    <!-- Tailwind CSS CDN (or replace with your local asset path) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% block title %}Bienvenue chez STEG Réclamations{% endblock %}
 
-    {% block stylesheets %}
-    <!-- Add any extra styles here -->
-    {% endblock %}
-</head>
-
-<body class="bg-white">
-
-    <!-- Top Navbar -->
-    <nav class="bg-[#9eb3c2] text-white shadow-md">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-2">
-                <img src="{{ asset('path/to/logo.png') }}" alt="Logo" class="h-8 w-8">
-                <span class="font-bold text-lg">My Dashboard</span>
-            </a>
-
-            <!-- Search Bar -->
-            <div class="flex space-x-4 items-center">
-                <form action="#" method="GET" class="hidden md:block">
-                    <div class="relative">
-                        <input type="text" name="search" class="bg-gray-100 text-gray-600 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:bg-white focus:ring-2 focus:ring-gray-600" placeholder="Search">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <i class="fa fa-search text-gray-400"></i>
-                        </span>
+{% block body %}
+  <!-- Section de démarrage (plein écran) -->
+<!-- Section de démarrage -->
+<section class="min-h-screen max-w w-full mx-auto overflow-hidden bg-sky-200 dark:bg-slate-950 dark:rounded flex items-center rounded">
+    <div class="container mx-auto">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center -mx-5">
+                <!-- Partie gauche : Image -->
+                <div class="w-full lg:w-1/2 px-5 mb-20 lg:mb-0">
+                    <div class="w-full px-100 mb-20 lg:mb-0">
+                    <img src="{{ asset('images/accueil1.jpg') }}" alt="Technicien STEG" class="rounded-3xl shadow-lg w-full ">
                     </div>
-                </form>
+                    <h6 class="mt-10 mb-5 text-3xl font-extrabold leading-tight text-gray-800 dark:text-gray-200">Simplifiez vos réclamations avec STEG...</h6>
+                </div>
 
-                <!-- User Profile -->
-                <a href="#" class="text-white hover:text-gray-200">
-                    <i class="fa fa-user-circle text-2xl"></i>
-                </a>
+                <!-- Partie droite : Étapes -->
+                <div class="w-full lg:w-1/2 px-5">
+                    <ul>
+                        <li class="flex pb-10 mb-8 border-b border-gray-200 dark:bg-slate-950">
+                            <div class="mr-8">
+                                <span class="flex justify-center items-center w-14 h-14 bg-sky-900 text-lg font-bold rounded-full text-white shadow-lg">1</span>
+                            </div>
+                            <div class="max-w-xs">
+                                <h3 class="mb-2 text-lg font-bold text-gray-700 dark:text-gray-300">Créez votre compte</h3>
+                                <p class="text-lg text-gray-500 dark:text-gray-400">Inscrivez-vous pour accéder à toutes nos fonctionnalités.</p>
+                            </div>
+                        </li>
+
+                        <li class="flex pb-10 mb-8 border-b border-gray-200 dark:bg-slate-950">
+                            <div class="mr-8">
+                                <span class="flex justify-center items-center w-14 h-14 bg-sky-900 text-lg font-bold rounded-full text-white shadow-lg">2</span>
+                            </div>
+                            <div class="max-w-xs">
+                                <h3 class="mb-2 text-lg font-bold text-gray-700 dark:text-gray-300">Personnalisez votre espace</h3>
+                                <p class="text-lg text-gray-500 dark:text-gray-400">Adaptez les outils et paramètres à vos besoins.</p>
+                            </div>
+                        </li>
+
+                        <li class="flex pb-10 border-b border-gray-200 dark:bg-slate-950">
+                            <div class="mr-8">
+                                <span class="flex justify-center items-center w-14 h-14 bg-sky-900 text-lg font-bold rounded-full text-white shadow-lg">3</span>
+                            </div>
+                            <div class="max-w-xs">
+                                <h3 class="mb-2 text-lg font-bold text-gray-700 dark:text-gray-300">Collaborez efficacement</h3>
+                                <p class="text-lg text-gray-500 dark:text-gray-400">Travaillez en équipe pour améliorer la gestion de vos réclamations.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <div class="flex">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-blue-900 text-white h-screen">
-            <div class="p-4 text-lg font-semibold text-white">Dashboard</div>
-            <nav class="space-y-2">
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-file"></i>
-                    <span>Orders</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-shopping-cart"></i>
-                    <span>Products</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-users"></i>
-                    <span>Customers</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-bar-chart"></i>
-                    <span>Reports</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-800">
-                    <i class="fa fa-cogs"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 p-6 bg-[#4970ba]">
-            {% block content %}
-            <h1 class="text-3xl font-semibold text-white">Welcome to Your Dashboard</h1>
-            <p class="mt-4 text-white">This is your main content area where you can manage everything.</p>
-            {% endblock %}
-        </main>
     </div>
+  </section>
+<section class="bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-center">
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">
+        <div class="max-w-2xl lg:max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Visitez nos Localisations</h2>
+            <p class="mt-4 text-lg text-gray-500 dark:text-gray-300">Nous sommes présents à plusieurs emplacements. Venez nous rendre visite !</p>
+        </div>
+        <div class="mt-16 lg:mt-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="rounded-lg overflow-hidden">
+                    <!-- Intégration de la carte Google personnalisée -->
+                    <iframe 
+                         src="https://www.google.com/maps/d/embed?mid=1NHhKdRKcyq0oMsJInmnMUJHLzY86o5U&ehbc=2E312F&noprof=1" 
+                        width="100%" height="480" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div>
+                    <div class="max-w-full mx-auto rounded-lg overflow-hidden bg-white dark:bg-gray-800 shadow-lg">
+                        <div class="px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Siège</h3>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Tunis</p>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Adresse</h3>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">38 rue Kamel Ataturk, 1080 Tunis</p>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Adresse Postale : BP 190, 1080 Tunis cedex</p>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Contact</h3>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Email : dpsc@steg.com.tn</p>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Téléphone : (+216) 71 341 311</p>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Fax :</p>
+                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                <li>(+216) 71 330 174</li>
+                                <li>(+216) 71 349 981</li>
+                                <li>(+216) 71 341 401</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    {% block javascripts %}
-    <!-- Add any extra scripts here -->
-    {% endblock %}
-</body>
-</html>
+
+
+{% endblock %}

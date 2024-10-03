@@ -53,4 +53,18 @@ class ReclamationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    // Search reclamations based on client email and search query (type, description, and address)
+public function searchByClientMailAndQuery(string $clientmail, string $query): array
+{
+    return $this->createQueryBuilder('r')
+        ->andWhere('r.clientmail = :clientmail')
+        // Search in 'type', 'description', and 'adresse' fields
+        ->andWhere('r.type LIKE :query OR r.description LIKE :query OR r.adresse LIKE :query')
+        ->setParameter('clientmail', $clientmail)
+        ->setParameter('query', '%' . $query . '%')
+        ->orderBy('r.date_soumission', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
 }
